@@ -20,6 +20,7 @@
 ## Bug Fixes
 - Set correct country for city Hong Kong (preset locations)
 - Properly enable/disable pitch, bank, true heading and indicated airspeed spinboxes based on location selection
+- Ensure visibility of newly inserted user locations, specifically when locations are sorted in descending order
 
 ## Under the Hood
 - Optimised logbook table column types
