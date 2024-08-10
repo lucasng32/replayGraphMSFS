@@ -121,7 +121,7 @@ E.g. on Windows:
 git config --global user.signingkey "%HOME%\.ssh\id_rsa.pub"
 ```
 
-Or on Mac/Linux:
+On Linux or macOS:
 ```
 git config --global user.signingkey "~/.ssh/id_rsa.pub"
 ```
