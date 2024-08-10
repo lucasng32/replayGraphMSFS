@@ -4,6 +4,9 @@
 
 ## New Features
 
+## New Features
+- KML placemark location import plugin
+
 ## Improvements
 
 ### Location Module
@@ -20,10 +23,16 @@
 ## Bug Fixes
 - Set correct country for city Hong Kong (preset locations)
 - Properly enable/disable pitch, bank, true heading and indicated airspeed spinboxes based on location selection
-- Ensure visibility of newly inserted user locations, specifically when locations are sorted in descending order
+- Do not reset backup period to "Never" when setting the backup path fails
+- Correctly name the file selection filter of the Sky Dolly logbook location import plugin
 
+## Documentation
+- Updated the "Flight Analysis" SQL to properly match the closest timestamps in tables *position* and *attitude*
+  * Note that since Sky Dolly v0.18 the position and attitude is sampled at different intervals; timestamps may or may not match exaclty (in most cases they do not)
+  * Also refer to: [SQL Query for Finding Closest Timestamps](https://zzzcode.ai/answer-question?id=307fbcc3-77bb-4553-91d0-461edb1da0e6)
+  
 ## Under the Hood
-- Optimised logbook table column types
+- Optimised logbook SQL table column types
 
 ## 0.19.1
 
