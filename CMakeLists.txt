@@ -133,6 +133,7 @@ target_sources(${APP_PROJECT_NAME}
         SECURITY.md
         SHASUM256.md
         THIRD_PARTY.md
+        SKYDOLLY.md
         doc/Design/Architecture.md
         doc/Design/README.md
         doc/Guidelines/User-Interface-Guidelines.md
