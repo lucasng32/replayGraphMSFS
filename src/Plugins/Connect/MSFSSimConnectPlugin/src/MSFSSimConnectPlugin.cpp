@@ -428,11 +428,11 @@ bool MSFSSimConnectPlugin::sendAircraftData(std::int64_t currentTimestamp, TimeV
                         SimConnectPositionAndAttitudeUser simConnectPositionAndAttitudeUser {simConnnectPositionAndAttitudeAll.user()};
                         // Adjust altitude (ASRA)
 #ifdef DEBUG
-                        qDebug() << "ASRA: Adjusting altitude by:" << d->currentAltitudeOffset << "from:" << simConnectPositionAndAttitudeUser.positionCommon.altitude;
+                        // qDebug() << "ASRA: Adjusting altitude by:" << d->currentAltitudeOffset << "from:" << simConnectPositionAndAttitudeUser.positionCommon.altitude;
 #endif
                         simConnectPositionAndAttitudeUser.positionCommon.altitude += d->currentAltitudeOffset;
 #ifdef DEBUG
-                        qDebug() << "ASRA: Adjusting altitude to:"  << simConnectPositionAndAttitudeUser.positionCommon.altitude;
+                        // qDebug() << "ASRA: Adjusting altitude to:"  << simConnectPositionAndAttitudeUser.positionCommon.altitude;
 #endif
 
                         const HRESULT res = ::SimConnect_SetDataOnSimObject(d->simConnectHandle, Enum::underly(SimConnectType::DataDefinition::PositionAndAttitudeUser),
