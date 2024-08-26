@@ -81,9 +81,12 @@ bool SQLiteAttitudeDao::add(std::int64_t aircraftId, const AttitudeData &attitud
         "  pitch,"
         "  bank,"
         "  true_heading,"
-        "  velocity_x,"
-        "  velocity_y,"
-        "  velocity_z,"
+        "  velocity_body_x,"
+        "  velocity_body_y,"
+        "  velocity_body_z,"
+        "  velocity_world_x,"
+        "  velocity_world_y,"
+        "  velocity_world_z,"
         "  on_ground"
         ") values ("
         " :aircraft_id,"
@@ -91,9 +94,12 @@ bool SQLiteAttitudeDao::add(std::int64_t aircraftId, const AttitudeData &attitud
         " :pitch,"
         " :bank,"
         " :true_heading,"
-        " :velocity_x,"
-        " :velocity_y,"
-        " :velocity_z,"
+        " :velocity_body_x,"
+        " :velocity_body_y,"
+        " :velocity_body_z,"
+        " :velocity_world_x,"
+        " :velocity_world_y,"
+        " :velocity_world_z,"
         " :on_ground"
         ");"
     );
@@ -102,9 +108,12 @@ bool SQLiteAttitudeDao::add(std::int64_t aircraftId, const AttitudeData &attitud
     query.bindValue(":pitch", attitude.pitch);
     query.bindValue(":bank", attitude.bank);
     query.bindValue(":true_heading", attitude.trueHeading);
-    query.bindValue(":velocity_x", attitude.velocityBodyX);
-    query.bindValue(":velocity_y", attitude.velocityBodyY);
-    query.bindValue(":velocity_z", attitude.velocityBodyZ);
+    query.bindValue(":velocity_body_x", attitude.velocityBodyX);
+    query.bindValue(":velocity_body_y", attitude.velocityBodyY);
+    query.bindValue(":velocity_body_z", attitude.velocityBodyZ);
+    query.bindValue(":velocity_world_x", attitude.velocityWorldX);
+    query.bindValue(":velocity_world_y", attitude.velocityWorldY);
+    query.bindValue(":velocity_world_z", attitude.velocityWorldZ);
     query.bindValue(":on_ground", attitude.onGround);
 
     const bool ok = query.exec();
@@ -145,9 +154,12 @@ std::vector<AttitudeData> SQLiteAttitudeDao::getByAircraftId(std::int64_t aircra
         const auto pitchIdx = record.indexOf("pitch");
         const auto bankIdx = record.indexOf("bank");
         const auto trueHeadingIdx = record.indexOf("true_heading");
-        const auto velocitXIdx = record.indexOf("velocity_x");
-        const auto velocitYIdx = record.indexOf("velocity_y");
-        const auto velocitZIdx = record.indexOf("velocity_z");
+        const auto velocitBodyXIdx = record.indexOf("velocity_body_x");
+        const auto velocitBodyYIdx = record.indexOf("velocity_body_y");
+        const auto velocitBodyZIdx = record.indexOf("velocity_body_z");
+        const auto velocitWorldXIdx = record.indexOf("velocity_world_x");
+        const auto velocitWorldYIdx = record.indexOf("velocity_world_y");
+        const auto velocitWorldZIdx = record.indexOf("velocity_world_z");
         const auto onGroundIdx = record.indexOf("on_ground");
         while (query.next()) {
             AttitudeData data;
@@ -155,9 +167,12 @@ std::vector<AttitudeData> SQLiteAttitudeDao::getByAircraftId(std::int64_t aircra
             data.pitch = query.value(pitchIdx).toDouble();
             data.bank = query.value(bankIdx).toDouble();
             data.trueHeading = query.value(trueHeadingIdx).toDouble();
-            data.velocityBodyX = query.value(velocitXIdx).toDouble();
-            data.velocityBodyY = query.value(velocitYIdx).toDouble();
-            data.velocityBodyZ = query.value(velocitZIdx).toDouble();
+            data.velocityBodyX = query.value(velocitBodyXIdx).toDouble();
+            data.velocityBodyY = query.value(velocitBodyYIdx).toDouble();
+            data.velocityBodyZ = query.value(velocitBodyZIdx).toDouble();
+            data.velocityWorldX = query.value(velocitWorldXIdx).toDouble();
+            data.velocityWorldY = query.value(velocitWorldYIdx).toDouble();
+            data.velocityWorldZ = query.value(velocitWorldZIdx).toDouble();
             data.onGround = query.value(onGroundIdx).toBool();
 
             attitudeData.push_back(std::move(data));

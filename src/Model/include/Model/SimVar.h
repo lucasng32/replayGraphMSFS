@@ -44,6 +44,28 @@ namespace SimVar
     constexpr const char *VelocityBodyX = "Velocity Body X";
     constexpr const char *VelocityBodyY = "Velocity Body Y";
     constexpr const char *VelocityBodyZ = "Velocity Body Z";
+
+    // added for server module
+    constexpr const char *VelocityWorldX = "Velocity World X";
+    constexpr const char *VelocityWorldY = "Velocity World Y";
+    constexpr const char *VelocityWorldZ = "Velocity World Z";
+    constexpr const char *GroundVelocity = "Ground Velocity";
+    constexpr const char *AccelerationBodyX = "AccelerationBodyX";
+    constexpr const char *AccelerationBodyY = "AccelerationBodyY";
+    constexpr const char *AccelerationBodyZ = "AccelerationBodyZ";
+    constexpr const char *AccelerationWorldX = "AccelerationWorldX";
+    constexpr const char *AccelerationWorldY = "AccelerationWorldY";
+    constexpr const char *AccelerationWorldZ = "AccelerationWorldZ";
+    constexpr const char *GForce = "G Force";
+    constexpr const char *IncidenceAlpha = "Incidence Alpha";
+    constexpr const char *RotationVelocityBodyX = "Rotation Velocity Body X";
+    constexpr const char *RotationVelocityBodyY = "Rotation Velocity Body Y";
+    constexpr const char *RotationVelocityBodyZ = "Rotation Velocity Body Z";
+
+
+    // extra stuff for touchdown
+
+
     constexpr const char *SimOnGround = "Sim On Ground";
     constexpr const char *PlaneAltAboveGroundMinusCG = "Plane Alt Above Ground Minus CG";
 

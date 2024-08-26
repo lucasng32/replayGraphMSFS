@@ -76,6 +76,11 @@ const AttitudeData &Attitude::interpolate(std::int64_t timestamp, TimeVariableDa
             m_currentData.velocityBodyY = SkyMath::interpolateLinear(p1->velocityBodyY, p2->velocityBodyY, tn);
             m_currentData.velocityBodyZ = SkyMath::interpolateLinear(p1->velocityBodyZ, p2->velocityBodyZ, tn);
 
+            // Velocity
+            m_currentData.velocityWorldX = SkyMath::interpolateLinear(p1->velocityWorldX, p2->velocityWorldX, tn);
+            m_currentData.velocityWorldY = SkyMath::interpolateLinear(p1->velocityWorldY, p2->velocityWorldY, tn);
+            m_currentData.velocityWorldZ = SkyMath::interpolateLinear(p1->velocityWorldZ, p2->velocityWorldZ, tn);
+
             // On ground (boolean value - no interpolation)
             m_currentData.onGround = p1->onGround;
 

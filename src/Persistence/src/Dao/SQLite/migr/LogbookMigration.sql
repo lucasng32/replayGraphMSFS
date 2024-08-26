@@ -91,9 +91,12 @@ create table position (
     pitch real,
     bank real,
     heading real,
-    velocity_x real,
-    velocity_y real,
-    velocity_z real,
+    velocity_body_x real,
+    velocity_body_y real,
+    velocity_body_z real,
+    velocity_world_x real,
+    velocity_world_y real,
+    velocity_world_z real,
     rotation_velocity_x real,
     rotation_velocity_y real,
     rotation_velocity_z real,
@@ -857,16 +860,19 @@ create table position_new (
     pitch real,
     bank real,
     true_heading real,
-    velocity_x real,
-    velocity_y real,
-    velocity_z real,
+    velocity_body_x real,
+    velocity_body_y real,
+    velocity_body_z real,
+    velocity_world_x real,
+    velocity_world_y real,
+    velocity_world_z real,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
 );
 
 @migr(id = "1e013965-e38a-4df1-b70c-f1d3af6d1e5b", descn = "Copy data into new position table", step = 2)
-insert into position_new(aircraft_id, timestamp, latitude, longitude, altitude, indicated_altitude, pitch, bank, true_heading, velocity_x, velocity_y, velocity_z)
-select p.aircraft_id, p.timestamp, p.latitude, p.longitude, p.altitude, p.indicated_altitude, p.pitch, p.bank, p.true_heading, p.velocity_x, p.velocity_y, p.velocity_z
+insert into position_new(aircraft_id, timestamp, latitude, longitude, altitude, indicated_altitude, pitch, bank, true_heading, velocity_body_x, velocity_body_y, velocity_body_z, velocity_world_x, velocity_world_y, velocity_world_z)
+select p.aircraft_id, p.timestamp, p.latitude, p.longitude, p.altitude, p.indicated_altitude, p.pitch, p.bank, p.true_heading, p.velocity_body_x, p.velocity_body_y, p.velocity_body_z, p.velocity_world_x, p.velocity_world_y, p.velocity_world_z
 from   position p;
 
 @migr(id = "1e013965-e38a-4df1-b70c-f1d3af6d1e5b", descn = "Drop the old position table", step = 3)
@@ -1015,17 +1021,20 @@ create table attitude (
     pitch real,
     bank real,
     true_heading real,
-    velocity_x real,
-    velocity_y real,
-    velocity_z real,
+    velocity_body_x real,
+    velocity_body_y real,
+    velocity_body_z real,
+    velocity_world_x real,
+    velocity_world_y real,
+    velocity_world_z real,
     on_ground int,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
 );
 
 @migr(id = "4fda1c12-4c05-4152-af6b-1e495b12492e", descn = "Migrate data from position to attitute table", step = 2)
-insert into attitude (aircraft_id, timestamp, pitch, bank, true_heading, velocity_x, velocity_y, velocity_z, on_ground)
-select aircraft_id, timestamp, pitch, bank, true_heading, velocity_x, velocity_y, velocity_z, 0
+insert into attitude (aircraft_id, timestamp, pitch, bank, true_heading, velocity_body_x, velocity_body_y, velocity_body_z, velocity_world_x, velocity_world_y, velocity_world_z, on_ground)
+select aircraft_id, timestamp, pitch, bank, true_heading, velocity_body_x, velocity_body_y, velocity_body_z, velocity_world_x, velocity_world_y, velocity_world_z 0
 from   position;
 
 @migr(id = "4fda1c12-4c05-4152-af6b-1e495b12492e", descn = "Update the on_ground for the first n attitude with timestamp less than one second, based on the aircraft start_on_ground", step = 3)
@@ -1039,9 +1048,12 @@ where timestamp < 1000;
 alter table position drop column pitch;
 alter table position drop column bank;
 alter table position drop column true_heading;
-alter table position drop column velocity_x;
-alter table position drop column velocity_y;
-alter table position drop column velocity_z;
+alter table position drop column velocity_body_x;
+alter table position drop column velocity_body_y;
+alter table position drop column velocity_body_z;
+alter table position drop column velocity_world_x;
+alter table position drop column velocity_world_y;
+alter table position drop column velocity_world_z;
 
 @migr(id = "286b9b25-8bfa-431d-9904-93d2b94f19ad", descn = "Valid dates - ensure consistent date time format", step_cnt = 6)
 update flight
@@ -1217,9 +1229,12 @@ create table attitude_new (
     pitch real,
     bank real,
     true_heading real,
-    velocity_x real,
-    velocity_y real,
-    velocity_z real,
+    velocity_body_x real,
+    velocity_body_y real,
+    velocity_body_z real,
+    velocity_world_x real,
+    velocity_world_y real,
+    velocity_world_z real,
     on_ground integer,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
