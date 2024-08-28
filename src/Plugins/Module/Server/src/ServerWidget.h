@@ -66,6 +66,7 @@ private slots:
     void updateUi() noexcept;
     void onTimestampChanged(std::int64_t timestamp, TimeVariableData::Access access) noexcept;
     void onStateChanged(Connect::State state) noexcept;
+    void onWebMessage(QString message) noexcept;
 };
 
 #endif // LOCATIONWIDGET_H

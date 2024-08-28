@@ -23,6 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#include <QJsonDocument>
 #include <QJsonArray>
 #include <QtCore/QDebug>
 #include <Kernel/Const.h>
@@ -63,7 +64,7 @@ enum struct DataMode{
 
 struct ServerWidgetPrivate
 {
-    std::unique_ptr<WebSocketServer> server = std::make_unique<WebSocketServer>(1234);
+    std::unique_ptr<WebSocketServer> server {std::make_unique<WebSocketServer>(1234)};
     bool toReload;
 };
 
@@ -95,6 +96,8 @@ void ServerWidget::frenchConnection() noexcept
             this, &ServerWidget::onTimestampChanged);
     connect(&skyConnectManager, &SkyConnectManager::stateChanged,
             this, &ServerWidget::onStateChanged);
+    connect(d->server.get(), &WebSocketServer::messageReceived,
+            this, &ServerWidget::onWebMessage);
 }
 
 // PRIVATE SLOTS
@@ -107,6 +110,36 @@ void ServerWidget::updateUi() noexcept
 void ServerWidget::onStateChanged(Connect::State state) noexcept
 {
     d->toReload = true;
+}
+
+void ServerWidget::onWebMessage(QString message) noexcept
+{
+    // Only process slider message if in replay mode
+    auto &skyConnectManager = SkyConnectManager::getInstance();
+
+    if (skyConnectManager.isInReplayState()){
+        // Try to parse the message as JSON
+        QJsonParseError parseError;
+        QJsonObject webResponse;
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8(), &parseError);
+
+        if (parseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
+            webResponse = jsonDoc.object();
+        }
+        qDebug() << "json" << webResponse;
+        const auto &command = webResponse.value("command");
+
+        if (command == "pause"){
+            skyConnectManager.setPaused(SkyConnectIntf::Initiator::App, true);
+        }
+        if (command == "play"){
+            skyConnectManager.setPaused(SkyConnectIntf::Initiator::App, false);
+        }
+        if (command == "seek"){
+            const std::int64_t &sliderVal = webResponse.value("timestamp").toDouble() * 1000;
+            skyConnectManager.seek(sliderVal, SkyConnectIntf::SeekMode::Continuous);
+        }
+    }
 }
 
 void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::Access access) noexcept
@@ -136,6 +169,8 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"velocityWorldX", attitudeData.velocityWorldX},
                 {"velocityWorldY", attitudeData.velocityWorldY},
                 {"velocityWorldZ", attitudeData.velocityWorldZ},
+                {"gForce", attitudeData.gForce},
+                {"incidenceAlpha", attitudeData.incidenceAlpha},
                 {"timestamp", positionData.timestamp}
             };
             data.append(dataStep);
@@ -147,7 +182,7 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
             {"dataMode", static_cast<int>(DataMode::Replay)},
             {"toReload", d->toReload}
         };
-        qDebug() << "sending data for replay" << currTimestamp;
+        // qDebug() << "sending data for replay" << currTimestamp;
         d->server->sendData(dataSend);
         d->toReload = false;
     }
@@ -168,6 +203,8 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"velocityWorldX", attitudeData.velocityWorldX},
                 {"velocityWorldY", attitudeData.velocityWorldY},
                 {"velocityWorldZ", attitudeData.velocityWorldZ},
+                {"gForce", attitudeData.gForce},
+                {"incidenceAlpha", attitudeData.incidenceAlpha},
                 {"timestamp", positionData.timestamp}
             };
             data.append(dataStep);
@@ -177,7 +214,7 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"dataMode", static_cast<int>(DataMode::Record)},
                 {"toReload", d->toReload}
             };
-            qDebug() << "sending live data " << currTimestamp;
+            // qDebug() << "sending live data " << currTimestamp;
             d->server->sendData(dataSend);
         }
     }

@@ -19,6 +19,7 @@ public:
 
 Q_SIGNALS:
     void closed();
+    void messageReceived(QString message);
 
 private Q_SLOTS:
     void onNewConnection();

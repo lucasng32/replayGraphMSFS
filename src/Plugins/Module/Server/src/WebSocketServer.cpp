@@ -63,6 +63,7 @@ void WebSocketServer::processTextMessage(QString message)
     if (pClient) {
         pClient->sendTextMessage(message);
     }
+    emit messageReceived(message);
 }
 //! [processTextMessage]
 
