@@ -71,15 +71,34 @@ const AttitudeData &Attitude::interpolate(std::int64_t timestamp, TimeVariableDa
             // Heading: [0, 360] - discontinuity at 0/360
             m_currentData.trueHeading = SkyMath::interpolateHermite360(p0->trueHeading, p1->trueHeading, p2->trueHeading, p3->trueHeading, tn, ::Tension);
 
-            // Velocity
+            // Velocity Body
             m_currentData.velocityBodyX = SkyMath::interpolateLinear(p1->velocityBodyX, p2->velocityBodyX, tn);
             m_currentData.velocityBodyY = SkyMath::interpolateLinear(p1->velocityBodyY, p2->velocityBodyY, tn);
             m_currentData.velocityBodyZ = SkyMath::interpolateLinear(p1->velocityBodyZ, p2->velocityBodyZ, tn);
 
-            // Velocity
+            // Velocity World
             m_currentData.velocityWorldX = SkyMath::interpolateLinear(p1->velocityWorldX, p2->velocityWorldX, tn);
             m_currentData.velocityWorldY = SkyMath::interpolateLinear(p1->velocityWorldY, p2->velocityWorldY, tn);
             m_currentData.velocityWorldZ = SkyMath::interpolateLinear(p1->velocityWorldZ, p2->velocityWorldZ, tn);
+
+            // Acceleration Body
+            m_currentData.accelerationBodyX = SkyMath::interpolateLinear(p1->accelerationBodyX, p2->accelerationBodyX, tn);
+            m_currentData.accelerationBodyY = SkyMath::interpolateLinear(p1->accelerationBodyY, p2->accelerationBodyY, tn);
+            m_currentData.accelerationBodyZ = SkyMath::interpolateLinear(p1->accelerationBodyZ, p2->accelerationBodyZ, tn);
+
+            // Acceleration World
+            m_currentData.accelerationWorldX = SkyMath::interpolateLinear(p1->accelerationWorldX, p2->accelerationWorldX, tn);
+            m_currentData.accelerationWorldY = SkyMath::interpolateLinear(p1->accelerationWorldY, p2->accelerationWorldY, tn);
+            m_currentData.accelerationWorldZ = SkyMath::interpolateLinear(p1->accelerationWorldZ, p2->accelerationWorldZ, tn);
+
+            // Rotation Velocity
+            m_currentData.rotationVelocityBodyX = SkyMath::interpolateLinear(p1->rotationVelocityBodyX, p2->rotationVelocityBodyX, tn);
+            m_currentData.rotationVelocityBodyY = SkyMath::interpolateLinear(p1->rotationVelocityBodyY, p2->rotationVelocityBodyY, tn);
+            m_currentData.rotationVelocityBodyZ = SkyMath::interpolateLinear(p1->rotationVelocityBodyZ, p2->rotationVelocityBodyZ, tn);
+
+            // G Force and AoA
+            m_currentData.gForce = SkyMath::interpolateLinear(p1->gForce, p2->gForce, tn);
+            m_currentData.incidenceAlpha = SkyMath::interpolateLinear(p1->incidenceAlpha, p2->incidenceAlpha, tn);
 
             // On ground (boolean value - no interpolation)
             m_currentData.onGround = p1->onGround;

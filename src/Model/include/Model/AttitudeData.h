@@ -44,6 +44,26 @@ struct MODEL_API AttitudeData final : public TimeVariableData
     double velocityWorldY {0.0};
     double velocityWorldZ {0.0};
 
+    // Acceleration
+    double accelerationBodyX {0.0};
+    double accelerationBodyY {0.0};
+    double accelerationBodyZ {0.0};
+
+    double accelerationWorldX {0.0};
+    double accelerationWorldY {0.0};
+    double accelerationWorldZ {0.0};
+
+    // G Force
+    double gForce {0.0};
+
+    // AoA
+    double incidenceAlpha {0.0};
+
+    // Rotation Velocity
+    double rotationVelocityBodyX {0.0};
+    double rotationVelocityBodyY {0.0};
+    double rotationVelocityBodyZ {0.0};
+
     bool onGround {false};
 
     explicit AttitudeData(double pitch = 0.0, double bank = 0.0, double trueHeading = 0.0) noexcept;

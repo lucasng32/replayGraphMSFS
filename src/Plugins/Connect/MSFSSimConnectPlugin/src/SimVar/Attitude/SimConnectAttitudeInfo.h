@@ -44,6 +44,32 @@ struct SimConnectAttitudeInfo
 {
     std::int32_t onGround {0};
 
+    // Velocity World
+    double velocityWorldX {0.0};
+    double velocityWorldY {0.0};
+    double velocityWorldZ {0.0};
+
+    // Acceleration Body
+    double accelerationBodyX {0.0};
+    double accelerationBodyY {0.0};
+    double accelerationBodyZ {0.0};
+
+    // Acceleration World
+    double accelerationWorldX {0.0};
+    double accelerationWorldY {0.0};
+    double accelerationWorldZ {0.0};
+
+    // Rotation Velocity
+    double rotationVelocityBodyX {0.0};
+    double rotationVelocityBodyY {0.0};
+    double rotationVelocityBodyZ {0.0};
+
+    // G Force
+    double gForce {0.0};
+
+    // AoA
+    double incidenceAlpha {0.0};
+
     SimConnectAttitudeInfo(const AttitudeData &data) noexcept
         : SimConnectAttitudeInfo()
     {
@@ -55,6 +81,26 @@ struct SimConnectAttitudeInfo
     inline void fromAttitudeData(const AttitudeData &data) noexcept
     {
         onGround = data.onGround ? 1 : 0;
+
+        velocityWorldX = data.velocityWorldX;
+        velocityWorldY = data.velocityWorldY;
+        velocityWorldZ = data.velocityWorldZ;
+
+        accelerationBodyX = data.accelerationBodyX;
+        accelerationBodyY = data.accelerationBodyY;
+        accelerationBodyZ = data.accelerationBodyZ;
+
+        accelerationWorldX = data.accelerationWorldX;
+        accelerationWorldY = data.accelerationWorldY;
+        accelerationWorldZ = data.accelerationWorldZ;
+
+        rotationVelocityBodyX = data.rotationVelocityBodyX;
+        rotationVelocityBodyY = data.rotationVelocityBodyY;
+        rotationVelocityBodyZ = data.rotationVelocityBodyZ;
+
+        gForce = data.gForce;
+
+        incidenceAlpha = data.incidenceAlpha;
     }
 
     inline AttitudeData toAttitudeData() const noexcept
@@ -67,11 +113,55 @@ struct SimConnectAttitudeInfo
     inline void toAttitudeData(AttitudeData &data) const noexcept
     {
         data.onGround = onGround != 0;
+
+        data.velocityWorldX = velocityWorldX;
+        data.velocityWorldY = velocityWorldY;
+        data.velocityWorldZ = velocityWorldZ;
+
+        data.accelerationBodyX = accelerationBodyX;
+        data.accelerationBodyY = accelerationBodyY;
+        data.accelerationBodyZ = accelerationBodyZ;
+
+        data.accelerationWorldX = accelerationWorldX;
+        data.accelerationWorldY = accelerationWorldY;
+        data.accelerationWorldZ = accelerationWorldZ;
+
+        data.rotationVelocityBodyX = rotationVelocityBodyX;
+        data.rotationVelocityBodyY = rotationVelocityBodyY;
+        data.rotationVelocityBodyZ = rotationVelocityBodyZ;
+
+        data.gForce = gForce;
+        data.incidenceAlpha = incidenceAlpha;
     }
 
     static inline void addToDataDefinition(HANDLE simConnectHandle, ::SIMCONNECT_DATA_DEFINITION_ID dataDefinitionId) noexcept
     {
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::SimOnGround, "Bool", ::SIMCONNECT_DATATYPE_INT32);
+
+        // Velocity World
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityWorldX, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityWorldY, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityWorldZ, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+
+        // Acceleration Body
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::AccelerationBodyX, "Feet per Second Squared", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::AccelerationBodyY, "Feet per Second Squared", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::AccelerationBodyZ, "Feet per Second Squared", ::SIMCONNECT_DATATYPE_FLOAT64);
+
+        // Acceleration World
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::AccelerationWorldX, "Feet per Second Squared", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::AccelerationWorldY, "Feet per Second Squared", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::AccelerationWorldZ, "Feet per Second Squared", ::SIMCONNECT_DATATYPE_FLOAT64);
+
+        // Rotation Velocity
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::RotationVelocityBodyX, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::RotationVelocityBodyY, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::RotationVelocityBodyZ, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+
+        // G Force and AoA
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::GForce, "Gforce", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::IncidenceAlpha, "Radians", ::SIMCONNECT_DATATYPE_FLOAT64);
+
     }
 };
 #pragma pack(pop)

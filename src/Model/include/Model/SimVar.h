@@ -45,25 +45,27 @@ namespace SimVar
     constexpr const char *VelocityBodyY = "Velocity Body Y";
     constexpr const char *VelocityBodyZ = "Velocity Body Z";
 
-    // added for server module
+
+    // added in attitudeData
     constexpr const char *VelocityWorldX = "Velocity World X";
     constexpr const char *VelocityWorldY = "Velocity World Y";
     constexpr const char *VelocityWorldZ = "Velocity World Z";
-    constexpr const char *GroundVelocity = "Ground Velocity";
-    constexpr const char *AccelerationBodyX = "AccelerationBodyX";
-    constexpr const char *AccelerationBodyY = "AccelerationBodyY";
-    constexpr const char *AccelerationBodyZ = "AccelerationBodyZ";
-    constexpr const char *AccelerationWorldX = "AccelerationWorldX";
-    constexpr const char *AccelerationWorldY = "AccelerationWorldY";
-    constexpr const char *AccelerationWorldZ = "AccelerationWorldZ";
-    constexpr const char *GForce = "G Force";
-    constexpr const char *IncidenceAlpha = "Incidence Alpha";
+
+    constexpr const char *AccelerationBodyX = "Acceleration Body X";
+    constexpr const char *AccelerationBodyY = "Acceleration Body Y";
+    constexpr const char *AccelerationBodyZ = "Acceleration Body Z";
+
+    constexpr const char *AccelerationWorldX = "Acceleration World X";
+    constexpr const char *AccelerationWorldY = "Acceleration World Y";
+    constexpr const char *AccelerationWorldZ = "Acceleration World Z";
+
     constexpr const char *RotationVelocityBodyX = "Rotation Velocity Body X";
     constexpr const char *RotationVelocityBodyY = "Rotation Velocity Body Y";
     constexpr const char *RotationVelocityBodyZ = "Rotation Velocity Body Z";
 
+    constexpr const char *GForce = "G Force";
 
-    // extra stuff for touchdown
+    constexpr const char *IncidenceAlpha = "Incidence Alpha";
 
 
     constexpr const char *SimOnGround = "Sim On Ground";

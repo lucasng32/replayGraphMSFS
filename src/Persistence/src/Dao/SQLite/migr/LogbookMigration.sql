@@ -100,6 +100,14 @@ create table position (
     rotation_velocity_x real,
     rotation_velocity_y real,
     rotation_velocity_z real,
+    acceleration_body_x real,
+    acceleration_body_y real,
+    acceleration_body_z real,
+    acceleration_world_x real,
+    acceleration_world_y real,
+    acceleration_world_z real,
+    g_force real,
+    incidence_alpha real,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
 );
@@ -866,13 +874,75 @@ create table position_new (
     velocity_world_x real,
     velocity_world_y real,
     velocity_world_z real,
+    rotation_velocity_x real,
+    rotation_velocity_y real,
+    rotation_velocity_z real,
+    acceleration_body_x real,
+    acceleration_body_y real,
+    acceleration_body_z real,
+    acceleration_world_x real,
+    acceleration_world_y real,
+    acceleration_world_z real,
+    g_force real,
+    incidence_alpha real,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
 );
 
 @migr(id = "1e013965-e38a-4df1-b70c-f1d3af6d1e5b", descn = "Copy data into new position table", step = 2)
-insert into position_new(aircraft_id, timestamp, latitude, longitude, altitude, indicated_altitude, pitch, bank, true_heading, velocity_body_x, velocity_body_y, velocity_body_z, velocity_world_x, velocity_world_y, velocity_world_z)
-select p.aircraft_id, p.timestamp, p.latitude, p.longitude, p.altitude, p.indicated_altitude, p.pitch, p.bank, p.true_heading, p.velocity_body_x, p.velocity_body_y, p.velocity_body_z, p.velocity_world_x, p.velocity_world_y, p.velocity_world_z
+insert into position_new(aircraft_id,
+    timestamp,
+    latitude,
+    longitude,
+    altitude,
+    indicated_altitude,
+    pitch,
+    bank,
+    true_heading,
+    velocity_body_x,
+    velocity_body_y,
+    velocity_body_z,
+    velocity_world_x,
+    velocity_world_y,
+    velocity_world_z,
+    rotation_velocity_x,
+    rotation_velocity_y,
+    rotation_velocity_z,
+    acceleration_body_x,
+    acceleration_body_y,
+    acceleration_body_z,
+    acceleration_world_x,
+    acceleration_world_y,
+    acceleration_world_z,
+    g_force,
+    incidence_alpha
+    )
+select p.aircraft_id,
+    p.timestamp,
+    p.latitude,
+    p.longitude,
+    p.altitude,
+    p.indicated_altitude,
+    p.pitch,
+    p.bank,
+    p.true_heading,
+    p.velocity_body_x,
+    p.velocity_body_y,
+    p.velocity_body_z,
+    p.velocity_world_x,
+    p.velocity_world_y,
+    p.velocity_world_z,
+    p.rotation_velocity_x,
+    p.rotation_velocity_y,
+    p.rotation_velocity_z,
+    p.acceleration_body_x,
+    p.acceleration_body_y,
+    p.acceleration_body_z,
+    p.acceleration_world_x,
+    p.acceleration_world_y,
+    p.acceleration_world_z,
+    p.g_force,
+    p.incidence_alpha
 from   position p;
 
 @migr(id = "1e013965-e38a-4df1-b70c-f1d3af6d1e5b", descn = "Drop the old position table", step = 3)
@@ -1027,14 +1097,69 @@ create table attitude (
     velocity_world_x real,
     velocity_world_y real,
     velocity_world_z real,
+    rotation_velocity_x real,
+    rotation_velocity_y real,
+    rotation_velocity_z real,
+    acceleration_body_x real,
+    acceleration_body_y real,
+    acceleration_body_z real,
+    acceleration_world_x real,
+    acceleration_world_y real,
+    acceleration_world_z real,
+    g_force real,
+    incidence_alpha real,
     on_ground int,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
 );
 
 @migr(id = "4fda1c12-4c05-4152-af6b-1e495b12492e", descn = "Migrate data from position to attitute table", step = 2)
-insert into attitude (aircraft_id, timestamp, pitch, bank, true_heading, velocity_body_x, velocity_body_y, velocity_body_z, velocity_world_x, velocity_world_y, velocity_world_z, on_ground)
-select aircraft_id, timestamp, pitch, bank, true_heading, velocity_body_x, velocity_body_y, velocity_body_z, velocity_world_x, velocity_world_y, velocity_world_z 0
+insert into attitude (
+    aircraft_id,
+    timestamp,
+    pitch, bank,
+    true_heading,
+    velocity_body_x,
+    velocity_body_y,
+    velocity_body_z,
+    velocity_world_x,
+    velocity_world_y,
+    velocity_world_z,
+    rotation_velocity_x,
+    rotation_velocity_y,
+    rotation_velocity_z,
+    acceleration_body_x,
+    acceleration_body_y,
+    acceleration_body_z,
+    acceleration_world_x,
+    acceleration_world_y,
+    acceleration_world_z,
+    g_force,
+    incidence_alpha,
+    on_ground)
+select aircraft_id,
+    timestamp,
+    pitch,
+    bank,
+    true_heading,
+    velocity_body_x,
+    velocity_body_y,
+    velocity_body_z,
+    velocity_world_x,
+    velocity_world_y,
+    velocity_world_z,
+    rotation_velocity_x,
+    rotation_velocity_y,
+    rotation_velocity_z,
+    acceleration_body_x,
+    acceleration_body_y,
+    acceleration_body_z,
+    acceleration_world_x,
+    acceleration_world_y,
+    acceleration_world_z,
+    g_force,
+    incidence_alpha,
+    0
 from   position;
 
 @migr(id = "4fda1c12-4c05-4152-af6b-1e495b12492e", descn = "Update the on_ground for the first n attitude with timestamp less than one second, based on the aircraft start_on_ground", step = 3)
@@ -1054,6 +1179,17 @@ alter table position drop column velocity_body_z;
 alter table position drop column velocity_world_x;
 alter table position drop column velocity_world_y;
 alter table position drop column velocity_world_z;
+alter table position drop column rotation_velocity_x;
+alter table position drop column rotation_velocity_y;
+alter table position drop column rotation_velocity_z;
+alter table position drop column acceleration_body_x;
+alter table position drop column acceleration_body_y;
+alter table position drop column acceleration_body_z;
+alter table position drop column acceleration_world_x;
+alter table position drop column acceleration_world_y;
+alter table position drop column acceleration_world_z;
+alter table position drop column g_force;
+alter table position drop column incidence_alpha;
 
 @migr(id = "286b9b25-8bfa-431d-9904-93d2b94f19ad", descn = "Valid dates - ensure consistent date time format", step_cnt = 6)
 update flight
@@ -1235,6 +1371,17 @@ create table attitude_new (
     velocity_world_x real,
     velocity_world_y real,
     velocity_world_z real,
+    rotation_velocity_x real,
+    rotation_velocity_y real,
+    rotation_velocity_z real,
+    acceleration_body_x real,
+    acceleration_body_y real,
+    acceleration_body_z real,
+    acceleration_world_x real,
+    acceleration_world_y real,
+    acceleration_world_z real,
+    g_force real,
+    incidence_alpha real,
     on_ground integer,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)

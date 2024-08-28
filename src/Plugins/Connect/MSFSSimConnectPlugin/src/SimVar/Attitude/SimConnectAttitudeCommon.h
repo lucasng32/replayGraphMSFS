@@ -44,15 +44,10 @@ struct SimConnectAttitudeCommon
     double bank {0.0};
     double trueHeading {0.0};
 
-    // Velocity
+    // Velocity Body
     double velocityBodyX {0.0};
     double velocityBodyY {0.0};
     double velocityBodyZ {0.0};
-
-    // chuck extra vars here
-    double velocityWorldX {0.0};
-    double velocityWorldY {0.0};
-    double velocityWorldZ {0.0};
 
     // Implementation note:
     // If we would store the "rotation velocity body" (which we currently do not anymore) then
@@ -76,10 +71,6 @@ struct SimConnectAttitudeCommon
         velocityBodyX = data.velocityBodyX;
         velocityBodyY = data.velocityBodyY;
         velocityBodyZ = data.velocityBodyZ;
-
-        velocityWorldX = data.velocityWorldX;
-        velocityWorldY = data.velocityWorldY;
-        velocityWorldZ = data.velocityWorldZ;
     }
 
     inline AttitudeData toAttitudeData() const noexcept
@@ -98,10 +89,6 @@ struct SimConnectAttitudeCommon
         data.velocityBodyX = velocityBodyX;
         data.velocityBodyY = velocityBodyY;
         data.velocityBodyZ = velocityBodyZ;
-
-        data.velocityWorldX = velocityWorldX;
-        data.velocityWorldY = velocityWorldY;
-        data.velocityWorldZ = velocityWorldZ;
     }
 
     static inline void addToDataDefinition(HANDLE simConnectHandle, ::SIMCONNECT_DATA_DEFINITION_ID dataDefinitionId) noexcept
@@ -111,17 +98,10 @@ struct SimConnectAttitudeCommon
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::Bank, "Degrees", ::SIMCONNECT_DATATYPE_FLOAT64);
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::TrueHeading, "Degrees", ::SIMCONNECT_DATATYPE_FLOAT64);
 
-        // Velocity
+        // Velocity Body
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityBodyX, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityBodyY, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityBodyZ, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
-
-        // Server Variables
-        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityWorldX, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
-        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityWorldY, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
-        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::VelocityWorldZ, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
-        // test this
-
     }
 };
 #pragma pack(pop)
