@@ -59,7 +59,35 @@ struct MODEL_API AircraftType final
     SimType::EngineType engineType {SimType::EngineType::Unknown};
     int numberOfEngines {0};
 
-    AircraftType(QString type, QString category, int wingSpan, SimType::EngineType engineType, int numberOfEngines) noexcept;
+    // flight model characteristics
+    float designCruiseAltitude {0};
+    float designClimbSpeed {0};
+    float designCruiseSpeed {0};
+    float flapsFullStallSpeed {0};
+    float flapsUpStallSpeed {0};
+    float designTakeoffSpeed {0};
+    float stallAlpha {0};
+    float staticPitch {0};
+    float typicalDescentRate {0};
+    float zeroLiftAlpha {0};
+
+
+    AircraftType(QString type,
+                 QString category,
+                 int wingSpan,
+                 SimType::EngineType engineType,
+                 int numberOfEngines,
+                 float designCruiseAltitude,
+                 float designClimbSpeed ,
+                 float designCruiseSpeed ,
+                 float flapsFullStallSpeed ,
+                 float flapsUpStallSpeed ,
+                 float designTakeoffSpeed ,
+                 float stallAlpha ,
+                 float staticPitch ,
+                 float typicalDescentRate ,
+                 float zeroLiftAlpha
+                 ) noexcept;
     AircraftType() = default;
     AircraftType(const AircraftType &rhs) = default;
     AircraftType(AircraftType &&rhs) = default;

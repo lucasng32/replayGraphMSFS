@@ -75,6 +75,16 @@ create table aircraft (
     wing_span integer,
     engine_type integer,
     nof_engines integer,
+    design_cruise_altitude real,
+    design_climb_speed real,
+    design_cruise_speed real,
+    flaps_full_stall_speed real,
+    flaps_up_stall_speed real,
+    design_takeoff_speed real,
+    stall_alpha real,
+    static_pitch real,
+    typical_descent_rate real,
+    zero_lift_alpha real,
     altitude_above_ground real,
     start_on_ground integer,
     foreign key(flight_id) references flight(id)
@@ -279,16 +289,51 @@ create table aircraft_type (
     category text,
     wing_span integer,
     engine_type integer,
-    nof_engines integer
+    nof_engines integer,
+    design_cruise_altitude real,
+    design_climb_speed real,
+    design_cruise_speed real,
+    flaps_full_stall_speed real,
+    flaps_up_stall_speed real,
+    design_takeoff_speed real,
+    stall_alpha real,
+    static_pitch real,
+    typical_descent_rate real,
+    zero_lift_alpha real
 );
 
 @migr(id = "ca308d14-8d70-43d6-b30f-7e23e5cf114c", descn = "Populate the aircraft_type table, based on the existing data in table aircraft", step = 2)
-insert or replace into aircraft_type (type, category, wing_span, engine_type, nof_engines)
+insert or replace into aircraft_type (type,
+    category,
+    wing_span,
+    engine_type,
+    nof_engines,
+    design_cruise_altitude,
+    design_climb_speed,
+    design_cruise_speed,
+    flaps_full_stall_speed,
+    flaps_up_stall_speed,
+    design_takeoff_speed,
+    stall_alpha,
+    static_pitch,
+    typical_descent_rate,
+    zero_lift_alpha
+    )
 select a.type,
        a.category,
        a.wing_span,
        a.engine_type,
-       a.nof_engines
+       a.nof_engines,
+       a.design_cruise_altitude,
+       a.design_climb_speed,
+       a.design_cruise_speed,
+       a.flaps_full_stall_speed,
+       a.flaps_up_stall_speed,
+       a.design_takeoff_speed,
+       a.stall_alpha,
+       a.static_pitch,
+       a.typical_descent_rate,
+       a.zero_lift_alpha
 from aircraft a
 where type not null;
 
@@ -331,7 +376,7 @@ create unique index aircraft_idx1 on aircraft (flight_id, seq_nr);
 create index aircraft_idx2 on aircraft (type collate nocase);
 
 @migr(id = "ca308d14-8d70-43d6-b30f-7e23e5cf114c", descn = "Populate aircraft type table", step = 10)
-insert into aircraft_type values
+insert into aircraft_type (type, category, wing_span, engine_type, nof_engines) values
  ('Cessna 208B Grand Caravan EX','Airplane',52,6,1),
  ('Cessna Grand Caravan 01 Livery','Airplane',52,6,1),
  ('Cessna Grand Caravan Emerald Livery','Airplane',52,6,1),
@@ -619,7 +664,7 @@ create index aircraft_idx2 on aircraft (type collate nocase);
 alter table flight rename creation_date to creation_time;
 
 @migr(id = "3813896d-82a4-4ae1-ad10-c349ea0df073", descn = "Add additional aircraft types from sim update 7", step = 1)
-insert into aircraft_type values
+insert into aircraft_type (type, category, wing_span, engine_type, nof_engines) values
  ('Boeing F/A 18E Super Hornet Asobo','Airplane',44,2,2),
  ('Boeing F/A 18E Super Hornet Xbox Aviators Club Livery','Airplane',44,2,2),
  ('Boeing F/A 18E Super Hornet Aviators Club Livery','Airplane',44,2,2),
@@ -660,7 +705,7 @@ update metadata
 set    app_version = '0.10.0';
 
 @migr(id = "53b3542b-0fc6-4dae-9500-6167a306f250", descn = "Add additional aircraft types from the Top Gun DLC", step = 1)
-insert into aircraft_type values
+insert into aircraft_type (type, category, wing_span, engine_type, nof_engines) values
  ('Boeing F/A 18E Super Hornet Mrk Asobo','Airplane',44,2,2),
  ('Experimental Darkstar Asobo','Airplane',35,2,4)
  on conflict(type)
@@ -741,7 +786,7 @@ set    backup_period_id = case backup_period_id
                           end;
 
 @migr(id = "26d1892d-7264-4471-804e-2a3282c35b29", descn = "Add additional aircraft types from sim update 11 40th anniversary update", step = 1)
-insert into aircraft_type values
+insert into aircraft_type (type, category, wing_span, engine_type, nof_engines) values
  ('Boeing F/A 18E Super Hornet Mrk Asobo','Airplane',44,2,2),
  ('Experimental Darkstar Asobo','Airplane',35,2,4),
  ('Asobo DG1001E Neo','Airplane',65,0,1),
@@ -1058,7 +1103,7 @@ where flight.id in (select a.flight_id
 alter table aircraft drop column flight_number;
 
 @migr(id = "c9322b8f-ec99-431b-a861-23c85f9947fa", descn = "Add additional aircraft types from sim update 15", step = 1)
-insert into aircraft_type values
+insert into aircraft_type (type, category, wing_span, engine_type, nof_engines) values
  ('A320neo White Livery','Airplane',117,2,2),
  ('A320neo Airbus House Livery','Airplane',117,2,2),
  ('A320neo Aviators Club Livery','Airplane',117,2,2),

@@ -45,7 +45,6 @@ namespace SimVar
     constexpr const char *VelocityBodyY = "Velocity Body Y";
     constexpr const char *VelocityBodyZ = "Velocity Body Z";
 
-
     // added in attitudeData
     constexpr const char *VelocityWorldX = "Velocity World X";
     constexpr const char *VelocityWorldY = "Velocity World Y";
@@ -67,6 +66,17 @@ namespace SimVar
 
     constexpr const char *IncidenceAlpha = "Incidence Alpha";
 
+    // flight model characteristics
+    constexpr const char *DesignCruiseAltitude = "Design Cruise Alt";
+    constexpr const char *DesignClimbSpeed = "Design Speed Climb";
+    constexpr const char *DesignCruiseSpeed = "Design Speed VC";
+    constexpr const char *FlapsFullStallSpeed = "Design Speed VS0";
+    constexpr const char *FlapsUpStallSpeed = "Design Speed VS1";
+    constexpr const char *DesignTakeoffSpeed = "Design Takeoff Speed";
+    constexpr const char *StallAlpha = "Stall Alpha";
+    constexpr const char *StaticPitch = "Static Pitch";
+    constexpr const char *TypicalDescentRate = "Typical Descent Rate";
+    constexpr const char *ZeroLiftAlpha = "Zero Lift Alpha";
 
     constexpr const char *SimOnGround = "Sim On Ground";
     constexpr const char *PlaneAltAboveGroundMinusCG = "Plane Alt Above Ground Minus CG";

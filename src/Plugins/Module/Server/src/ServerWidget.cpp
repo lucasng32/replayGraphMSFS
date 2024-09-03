@@ -147,6 +147,8 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
     auto &skyConnectManager = SkyConnectManager::getInstance();
     auto &flight = Logbook::getInstance().getCurrentFlight();
     const auto &aircraft = flight.getUserAircraft();
+    const auto &aircraftInfo = aircraft.getAircraftInfo();
+    const auto &aircraftType = aircraftInfo.aircraftType;
     const auto &position = aircraft.getPosition();
     const auto &attitude = aircraft.getAttitude();
     const auto currTimestamp = skyConnectManager.getCurrentTimestamp();
@@ -171,6 +173,7 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"velocityWorldZ", attitudeData.velocityWorldZ},
                 {"gForce", attitudeData.gForce},
                 {"incidenceAlpha", attitudeData.incidenceAlpha},
+                {"stallAlpha", aircraftType.stallAlpha},
                 {"timestamp", positionData.timestamp}
             };
             data.append(dataStep);
@@ -182,6 +185,7 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
             {"dataMode", static_cast<int>(DataMode::Replay)},
             {"toReload", d->toReload}
         };
+        // qDebug() << "testing aircraft type " << aircraftType.stallAlpha;
         // qDebug() << "sending data for replay" << currTimestamp;
         d->server->sendData(dataSend);
         d->toReload = false;
@@ -205,6 +209,7 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"velocityWorldZ", attitudeData.velocityWorldZ},
                 {"gForce", attitudeData.gForce},
                 {"incidenceAlpha", attitudeData.incidenceAlpha},
+                {"stallAlpha", aircraftType.stallAlpha},
                 {"timestamp", positionData.timestamp}
             };
             data.append(dataStep);

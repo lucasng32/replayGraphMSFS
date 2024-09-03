@@ -46,4 +46,17 @@ void SimConnectAircraftInfo::addToDataDefinition(HANDLE simConnectHandle) noexce
     ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::WingSpan, "Feet", SIMCONNECT_DATATYPE_INT32);
     ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::EngineType, "Number", SIMCONNECT_DATATYPE_INT32);
     ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::NumberOfEngines, "Number", SIMCONNECT_DATATYPE_INT32);
+
+    // Flight Model Characteristics
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::DesignCruiseAltitude, "Feet", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::DesignClimbSpeed, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::DesignCruiseSpeed, "Feet per Second", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::FlapsFullStallSpeed, "knots", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::FlapsUpStallSpeed, "knots", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::DesignTakeoffSpeed, "Knots", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::StallAlpha, "Radians", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::StaticPitch, "Radians", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::TypicalDescentRate, "ft/min", ::SIMCONNECT_DATATYPE_FLOAT64);
+    ::SimConnect_AddToDataDefinition(simConnectHandle, Enum::underly(SimConnectType::DataDefinition::AircraftInfo), SimVar::ZeroLiftAlpha, "Radians", ::SIMCONNECT_DATATYPE_FLOAT64);
+
 }

@@ -125,7 +125,7 @@ bool SQLiteAttitudeDao::add(std::int64_t aircraftId, const AttitudeData &attitud
         " :on_ground"
         ");"
     );
-    qDebug() << query.lastError().text();
+
     query.bindValue(":aircraft_id", QVariant::fromValue(aircraftId));
     query.bindValue(":timestamp", QVariant::fromValue(attitude.timestamp));
     query.bindValue(":pitch", attitude.pitch);

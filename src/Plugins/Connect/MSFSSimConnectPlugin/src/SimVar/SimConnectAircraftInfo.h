@@ -62,6 +62,18 @@ struct SimConnectAircraftInfo
     std::int32_t engineType {0};
     std::int32_t numberOfEngines {0};
 
+    // flight model characteristics
+    double designCruiseAltitude {0.0}; //broken
+    double designClimbSpeed {0.0}; //weird
+    double designCruiseSpeed {0.0};
+    double flapsFullStallSpeed {0.0};
+    double flapsUpStallSpeed {0.0};
+    double designTakeoffSpeed {0.0}; //probably broken
+    double stallAlpha {0.0};
+    double staticPitch {0.0};
+    double typicalDescentRate {0.0}; //broken
+    double zeroLiftAlpha {0.0};
+
     inline AircraftInfo toAircraftInfo() const noexcept
     {
         AircraftInfo aircraftInfo(Const::InvalidId);
@@ -73,6 +85,17 @@ struct SimConnectAircraftInfo
         aircraftInfo.aircraftType.wingSpan = wingSpan;
         aircraftInfo.aircraftType.engineType = toEngineType(engineType);
         aircraftInfo.aircraftType.numberOfEngines = numberOfEngines;
+
+        aircraftInfo.aircraftType.designCruiseAltitude = designCruiseAltitude;
+        aircraftInfo.aircraftType.designClimbSpeed = designClimbSpeed;
+        aircraftInfo.aircraftType.designCruiseSpeed = designCruiseSpeed;
+        aircraftInfo.aircraftType.flapsFullStallSpeed = flapsFullStallSpeed;
+        aircraftInfo.aircraftType.flapsUpStallSpeed = flapsUpStallSpeed;
+        aircraftInfo.aircraftType.designTakeoffSpeed = designTakeoffSpeed;
+        aircraftInfo.aircraftType.stallAlpha = stallAlpha;
+        aircraftInfo.aircraftType.staticPitch = staticPitch;
+        aircraftInfo.aircraftType.typicalDescentRate = typicalDescentRate;
+        aircraftInfo.aircraftType.zeroLiftAlpha = zeroLiftAlpha;
 
         if (SUCCEEDED(StringCbLengthA(&atcId[0], sizeof(atcId), nullptr))) {
             aircraftInfo.tailNumber = QString::fromLatin1(atcId);

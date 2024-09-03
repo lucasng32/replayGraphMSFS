@@ -30,8 +30,33 @@
 
 // PUBLIC
 
-AircraftType::AircraftType(QString type, QString category, int wingSpan, SimType::EngineType engineType, int numberOfEngines) noexcept
-    : type(std::move(type)), category(std::move(category)), wingSpan(wingSpan), engineType(engineType), numberOfEngines(numberOfEngines)
+AircraftType::AircraftType(QString type,
+                           QString category,
+                           int wingSpan,
+                           SimType::EngineType engineType,
+                           int numberOfEngines,
+                           float designCruiseAltitude ,
+                           float designClimbSpeed ,
+                           float designCruiseSpeed ,
+                           float flapsFullStallSpeed ,
+                           float flapsUpStallSpeed ,
+                           float designTakeoffSpeed ,
+                           float stallAlpha ,
+                           float staticPitch ,
+                           float typicalDescentRate ,
+                           float zeroLiftAlpha
+                           ) noexcept
+    : type(std::move(type)), category(std::move(category)), wingSpan(wingSpan), engineType(engineType), numberOfEngines(numberOfEngines),
+    designCruiseAltitude(designCruiseAltitude),
+    designClimbSpeed(designClimbSpeed),
+    designCruiseSpeed(designCruiseSpeed),
+    flapsFullStallSpeed(flapsFullStallSpeed),
+    flapsUpStallSpeed(flapsUpStallSpeed),
+    designTakeoffSpeed(designTakeoffSpeed),
+    stallAlpha(stallAlpha),
+    staticPitch(staticPitch),
+    typicalDescentRate(typicalDescentRate),
+    zeroLiftAlpha(zeroLiftAlpha)
 {};
 
 void AircraftType::clear() noexcept
