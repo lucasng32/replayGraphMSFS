@@ -64,6 +64,15 @@ struct MODEL_API AttitudeData final : public TimeVariableData
     double rotationVelocityBodyY {0.0};
     double rotationVelocityBodyZ {0.0};
 
+    // Airspeed and Ground Speed
+    double indicatedAirspeed {0.0};
+    double trueAirspeed {0.0};
+    double groundSpeed {0.0};
+
+    // Wind speed and direction
+    double windSpeed {0.0};
+    double windDirection {0.0};
+
     bool onGround {false};
 
     explicit AttitudeData(double pitch = 0.0, double bank = 0.0, double trueHeading = 0.0) noexcept;

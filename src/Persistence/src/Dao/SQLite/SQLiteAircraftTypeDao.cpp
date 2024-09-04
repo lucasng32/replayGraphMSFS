@@ -70,8 +70,6 @@ SQLiteAircraftTypeDao::~SQLiteAircraftTypeDao() = default;
 
 bool SQLiteAircraftTypeDao::upsert(const AircraftType &aircraftType) const noexcept
 {
-
-    qDebug() << "test aircraft type at sql" << aircraftType.stallAlpha;
     const auto db {QSqlDatabase::database(d->connectionName)};
     QSqlQuery query {db};
     query.prepare(
@@ -124,8 +122,6 @@ bool SQLiteAircraftTypeDao::upsert(const AircraftType &aircraftType) const noexc
         "    typical_descent_rate = excluded.typical_descent_rate, "
         "    zero_lift_alpha = excluded.zero_lift_alpha; "
     );
-
-    qDebug() << "test upsert" << query.lastError().text();
 
     query.bindValue(":type", aircraftType.type);
     query.bindValue(":category", aircraftType.category);
@@ -227,8 +223,6 @@ std::vector<AircraftType> SQLiteAircraftTypeDao::getAll(bool *ok) const noexcept
         "from   aircraft_type at "
         "order by at.type asc;"
     );
-
-    qDebug() << "test get all" << query.lastError().text();
     const bool success = query.exec();
     if (success) {
         const bool querySizeFeature = db.driver()->hasFeature(QSqlDriver::QuerySize);

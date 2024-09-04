@@ -78,6 +78,13 @@ namespace SimVar
     constexpr const char *TypicalDescentRate = "Typical Descent Rate";
     constexpr const char *ZeroLiftAlpha = "Zero Lift Alpha";
 
+    constexpr const char *IndicatedAirspeed = "Airspeed Indicated";
+    constexpr const char *TrueAirspeed = "Airspeed True";
+    constexpr const char *GroundSpeed = "GROUND VELOCITY";
+
+    constexpr const char *WindSpeed = "AMBIENT WIND DIRECTION";
+    constexpr const char *WindDirection = "AMBIENT WIND VELOCITY";
+
     constexpr const char *SimOnGround = "Sim On Ground";
     constexpr const char *PlaneAltAboveGroundMinusCG = "Plane Alt Above Ground Minus CG";
 

@@ -100,6 +100,15 @@ const AttitudeData &Attitude::interpolate(std::int64_t timestamp, TimeVariableDa
             m_currentData.gForce = SkyMath::interpolateLinear(p1->gForce, p2->gForce, tn);
             m_currentData.incidenceAlpha = SkyMath::interpolateLinear(p1->incidenceAlpha, p2->incidenceAlpha, tn);
 
+            // Airspeed and Ground Speed
+            m_currentData.indicatedAirspeed = SkyMath::interpolateLinear(p1->indicatedAirspeed, p2->indicatedAirspeed, tn);
+            m_currentData.trueAirspeed = SkyMath::interpolateLinear(p1->trueAirspeed, p2->trueAirspeed, tn);
+            m_currentData.groundSpeed = SkyMath::interpolateLinear(p1->groundSpeed, p2->groundSpeed, tn);
+
+            // Wind speed and direction
+            m_currentData.windSpeed = SkyMath::interpolateLinear(p1->windSpeed, p2->windSpeed, tn);
+            m_currentData.windDirection = SkyMath::interpolateLinear(p1->windDirection, p2->windDirection, tn);
+
             // On ground (boolean value - no interpolation)
             m_currentData.onGround = p1->onGround;
 

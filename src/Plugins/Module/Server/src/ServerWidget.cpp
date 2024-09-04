@@ -56,6 +56,7 @@
 #include "WebSocketServer.h"
 #include "src/ui_ServerWidget.h"
 #include "ui_ServerWidget.h"
+#include "Model/PrimaryFlightControl.h"
 
 enum struct DataMode{
     Replay,
@@ -109,7 +110,9 @@ void ServerWidget::updateUi() noexcept
 
 void ServerWidget::onStateChanged(Connect::State state) noexcept
 {
-    d->toReload = true;
+    if (!(state == Connect::State::ReplayPaused)){
+        d->toReload = true;
+    }
 }
 
 void ServerWidget::onWebMessage(QString message) noexcept
@@ -152,12 +155,21 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
     const auto &position = aircraft.getPosition();
     const auto &attitude = aircraft.getAttitude();
     const auto currTimestamp = skyConnectManager.getCurrentTimestamp();
+    const auto &primaryFlightControl = aircraft.getPrimaryFlightControl();
+    QJsonObject aircraftModel = {
+        {"flapsUpStallSpeed", aircraftType.flapsUpStallSpeed},
+        {"flapsFullStallSpeed", aircraftType.flapsFullStallSpeed},
+        {"stallAlpha", aircraftType.stallAlpha},
+        {"staticPitch", aircraftType.staticPitch},
+        {"zeroLiftAlpha", aircraftType.zeroLiftAlpha}
+    };
     QJsonArray data;
     if (skyConnectManager.isInReplayState()) {
         // get current timestamp of skyConnectManager, send attitude JSON to client
         const auto interpolatedPositionData = Export::resamplePositionDataForExport(aircraft, SampleRate::DefaultResamplingPeriod);
         for (const auto &positionData : interpolatedPositionData) {
-            const auto &attitudeData = aircraft.getAttitude().interpolate(positionData.timestamp, TimeVariableData::Access::NoTimeOffset);
+            const auto &attitudeData = attitude.interpolate(positionData.timestamp, TimeVariableData::Access::NoTimeOffset);
+            const auto &primaryFlightControlData = primaryFlightControl.interpolate(positionData.timestamp, TimeVariableData::Access::NoTimeOffset);
             QJsonObject dataStep = {
                 {"altitude", positionData.altitude},
                 {"longitude", positionData.longitude},
@@ -173,7 +185,14 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"velocityWorldZ", attitudeData.velocityWorldZ},
                 {"gForce", attitudeData.gForce},
                 {"incidenceAlpha", attitudeData.incidenceAlpha},
-                {"stallAlpha", aircraftType.stallAlpha},
+                {"indicatedAirspeed", attitudeData.indicatedAirspeed},
+                {"trueAirspeed", attitudeData.trueAirspeed},
+                {"groundSpeed", attitudeData.groundSpeed},
+                {"windSpeed", attitudeData.windSpeed},
+                {"windDirection", attitudeData.windDirection},
+                {"aileronPosition", primaryFlightControlData.aileronPosition},
+                {"elevatorPosition", primaryFlightControlData.elevatorPosition},
+                {"rudderPosition", primaryFlightControlData.rudderPosition},
                 {"timestamp", positionData.timestamp}
             };
             data.append(dataStep);
@@ -183,9 +202,9 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
             {"data", data},
             {"timestamp", currTimestamp},
             {"dataMode", static_cast<int>(DataMode::Replay)},
-            {"toReload", d->toReload}
+            {"toReload", d->toReload},
+            {"aircraftModel", aircraftModel}
         };
-        // qDebug() << "testing aircraft type " << aircraftType.stallAlpha;
         // qDebug() << "sending data for replay" << currTimestamp;
         d->server->sendData(dataSend);
         d->toReload = false;
@@ -193,6 +212,7 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
     else if (skyConnectManager.isInRecordingState() && position.count() > 0){
         const auto &positionData = position.getLast();
         const auto &attitudeData = attitude.getLast();
+        const auto &primaryFlightControlData = primaryFlightControl.getLast();
         if (!positionData.isNull()){
             QJsonObject dataStep = {
                 {"altitude", positionData.altitude},
@@ -209,7 +229,14 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"velocityWorldZ", attitudeData.velocityWorldZ},
                 {"gForce", attitudeData.gForce},
                 {"incidenceAlpha", attitudeData.incidenceAlpha},
-                {"stallAlpha", aircraftType.stallAlpha},
+                {"indicatedAirspeed", attitudeData.indicatedAirspeed},
+                {"trueAirspeed", attitudeData.trueAirspeed},
+                {"groundSpeed", attitudeData.groundSpeed},
+                {"windSpeed", attitudeData.windSpeed},
+                {"windDirection", attitudeData.windDirection},
+                {"aileronPosition", primaryFlightControlData.aileronPosition},
+                {"elevatorPosition", primaryFlightControlData.elevatorPosition},
+                {"rudderPosition", primaryFlightControlData.rudderPosition},
                 {"timestamp", positionData.timestamp}
             };
             data.append(dataStep);
@@ -217,7 +244,8 @@ void ServerWidget::onTimestampChanged(std::int64_t timestamp, TimeVariableData::
                 {"data", data},
                 {"timestamp", currTimestamp},
                 {"dataMode", static_cast<int>(DataMode::Record)},
-                {"toReload", d->toReload}
+                {"toReload", d->toReload},
+                {"aircraftModel", aircraftModel}
             };
             // qDebug() << "sending live data " << currTimestamp;
             d->server->sendData(dataSend);

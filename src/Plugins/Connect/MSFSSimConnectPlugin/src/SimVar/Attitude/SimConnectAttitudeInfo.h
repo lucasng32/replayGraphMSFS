@@ -70,6 +70,15 @@ struct SimConnectAttitudeInfo
     // AoA
     double incidenceAlpha {0.0};
 
+    // Airspeed and Ground speed
+    double indicatedAirspeed {0.0};
+    double trueAirspeed {0.0};
+    double groundSpeed {0.0};
+
+    // Wind
+    double windSpeed {0.0};
+    double windDirection {0.0};
+
     SimConnectAttitudeInfo(const AttitudeData &data) noexcept
         : SimConnectAttitudeInfo()
     {
@@ -101,6 +110,13 @@ struct SimConnectAttitudeInfo
         gForce = data.gForce;
 
         incidenceAlpha = data.incidenceAlpha;
+
+        indicatedAirspeed = data.indicatedAirspeed;
+        trueAirspeed = data.trueAirspeed;
+        groundSpeed = data.groundSpeed;
+
+        windSpeed = data.windSpeed;
+        windDirection = data.windDirection;
     }
 
     inline AttitudeData toAttitudeData() const noexcept
@@ -132,6 +148,13 @@ struct SimConnectAttitudeInfo
 
         data.gForce = gForce;
         data.incidenceAlpha = incidenceAlpha;
+
+        data.indicatedAirspeed = indicatedAirspeed;
+        data.trueAirspeed = trueAirspeed;
+        data.groundSpeed = groundSpeed;
+
+        data.windSpeed = windSpeed;
+        data.windDirection = windDirection;
     }
 
     static inline void addToDataDefinition(HANDLE simConnectHandle, ::SIMCONNECT_DATA_DEFINITION_ID dataDefinitionId) noexcept
@@ -162,6 +185,14 @@ struct SimConnectAttitudeInfo
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::GForce, "Gforce", ::SIMCONNECT_DATATYPE_FLOAT64);
         ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::IncidenceAlpha, "Radians", ::SIMCONNECT_DATATYPE_FLOAT64);
 
+        // Airspeed and Ground speed
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::IndicatedAirspeed, "Knots", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::TrueAirspeed, "Knots", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::GroundSpeed, "Knots", ::SIMCONNECT_DATATYPE_FLOAT64);
+
+        // Wind
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::WindSpeed, "Knots", ::SIMCONNECT_DATATYPE_FLOAT64);
+        ::SimConnect_AddToDataDefinition(simConnectHandle, dataDefinitionId, SimVar::WindDirection, "Degrees", ::SIMCONNECT_DATATYPE_FLOAT64);
     }
 };
 #pragma pack(pop)

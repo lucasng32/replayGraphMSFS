@@ -98,6 +98,11 @@ bool SQLiteAttitudeDao::add(std::int64_t aircraftId, const AttitudeData &attitud
         "  acceleration_world_z,"
         "  g_force,"
         "  incidence_alpha,"
+        "  indicated_airspeed,"
+        "  true_airspeed,"
+        "  ground_speed,"
+        "  wind_speed,"
+        "  wind_direction,"
         "  on_ground"
         ") values ("
         " :aircraft_id,"
@@ -122,6 +127,11 @@ bool SQLiteAttitudeDao::add(std::int64_t aircraftId, const AttitudeData &attitud
         " :acceleration_world_z,"
         " :g_force,"
         " :incidence_alpha,"
+        " :indicated_airspeed,"
+        " :true_airspeed,"
+        " :ground_speed,"
+        " :wind_speed,"
+        " :wind_direction,"
         " :on_ground"
         ");"
     );
@@ -148,6 +158,11 @@ bool SQLiteAttitudeDao::add(std::int64_t aircraftId, const AttitudeData &attitud
     query.bindValue(":acceleration_world_z", attitude.accelerationWorldZ);
     query.bindValue(":g_force", attitude.gForce);
     query.bindValue(":incidence_alpha", attitude.incidenceAlpha);
+    query.bindValue(":indicated_airspeed", attitude.indicatedAirspeed);
+    query.bindValue(":true_airspeed", attitude.trueAirspeed);
+    query.bindValue(":ground_speed", attitude.groundSpeed);
+    query.bindValue(":wind_speed", attitude.windSpeed);
+    query.bindValue(":wind_direction", attitude.windDirection);
     query.bindValue(":on_ground", attitude.onGround);
 
     const bool ok = query.exec();
@@ -205,6 +220,11 @@ std::vector<AttitudeData> SQLiteAttitudeDao::getByAircraftId(std::int64_t aircra
         const auto rotationVelocityBodyZIdx = record.indexOf("rotation_velocity_body_z");
         const auto gForceIdx = record.indexOf("g_force");
         const auto incidenceAlphaIdx = record.indexOf("incidence_alpha");
+        const auto indicatedAirspeedIdx = record.indexOf("indicated_airspeed");
+        const auto trueAirspeedIdx = record.indexOf("true_airspeed");
+        const auto groundSpeedIdx = record.indexOf("ground_speed");
+        const auto windSpeedIdx = record.indexOf("wind_speed");
+        const auto windDirectionIdx = record.indexOf("wind_direction");
         const auto onGroundIdx = record.indexOf("on_ground");
         while (query.next()) {
             AttitudeData data;
@@ -229,6 +249,11 @@ std::vector<AttitudeData> SQLiteAttitudeDao::getByAircraftId(std::int64_t aircra
             data.rotationVelocityBodyZ = query.value(rotationVelocityBodyZIdx).toDouble();
             data.gForce = query.value(gForceIdx).toDouble();
             data.incidenceAlpha = query.value(incidenceAlphaIdx).toDouble();
+            data.indicatedAirspeed = query.value(indicatedAirspeedIdx).toDouble();
+            data.trueAirspeed = query.value(trueAirspeedIdx).toDouble();
+            data.groundSpeed = query.value(groundSpeedIdx).toDouble();
+            data.windSpeed = query.value(windSpeedIdx).toDouble();
+            data.windDirection = query.value(windDirectionIdx).toDouble();
             data.onGround = query.value(onGroundIdx).toBool();
 
             attitudeData.push_back(std::move(data));

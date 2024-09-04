@@ -118,6 +118,11 @@ create table position (
     acceleration_world_z real,
     g_force real,
     incidence_alpha real,
+    indicated_airspeed real,
+    true_airspeed real,
+    ground_speed real,
+    wind_speed real,
+    wind_direction real,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
 );
@@ -930,6 +935,11 @@ create table position_new (
     acceleration_world_z real,
     g_force real,
     incidence_alpha real,
+    indicated_airspeed real,
+    true_airspeed real,
+    ground_speed real,
+    wind_speed real,
+    wind_direction real,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
 );
@@ -960,7 +970,12 @@ insert into position_new(aircraft_id,
     acceleration_world_y,
     acceleration_world_z,
     g_force,
-    incidence_alpha
+    incidence_alpha,
+    indicated_airspeed,
+    true_airspeed,
+    ground_speed,
+    wind_speed,
+    wind_direction
     )
 select p.aircraft_id,
     p.timestamp,
@@ -987,7 +1002,12 @@ select p.aircraft_id,
     p.acceleration_world_y,
     p.acceleration_world_z,
     p.g_force,
-    p.incidence_alpha
+    p.incidence_alpha,
+    p.indicated_airspeed,
+    p.true_airspeed,
+    p.ground_speed,
+    p.wind_speed,
+    p.wind_direction
 from   position p;
 
 @migr(id = "1e013965-e38a-4df1-b70c-f1d3af6d1e5b", descn = "Drop the old position table", step = 3)
@@ -1153,6 +1173,11 @@ create table attitude (
     acceleration_world_z real,
     g_force real,
     incidence_alpha real,
+    indicated_airspeed real,
+    true_airspeed real,
+    ground_speed real,
+    wind_speed real,
+    wind_direction real,
     on_ground int,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
@@ -1181,6 +1206,11 @@ insert into attitude (
     acceleration_world_z,
     g_force,
     incidence_alpha,
+    indicated_airspeed,
+    true_airspeed,
+    ground_speed,
+    wind_speed,
+    wind_direction,
     on_ground)
 select aircraft_id,
     timestamp,
@@ -1204,6 +1234,11 @@ select aircraft_id,
     acceleration_world_z,
     g_force,
     incidence_alpha,
+    indicated_airspeed,
+    true_airspeed,
+    ground_speed,
+    wind_speed,
+    wind_direction,
     0
 from   position;
 
@@ -1235,6 +1270,11 @@ alter table position drop column acceleration_world_y;
 alter table position drop column acceleration_world_z;
 alter table position drop column g_force;
 alter table position drop column incidence_alpha;
+alter table position drop column indicated_airspeed;
+alter table position drop column true_airspeed;
+alter table position drop column ground_speed;
+alter table position drop column wind_speed;
+alter table position drop column wind_direction;
 
 @migr(id = "286b9b25-8bfa-431d-9904-93d2b94f19ad", descn = "Valid dates - ensure consistent date time format", step_cnt = 6)
 update flight
@@ -1427,6 +1467,11 @@ create table attitude_new (
     acceleration_world_z real,
     g_force real,
     incidence_alpha real,
+    indicated_airspeed real,
+    true_airspeed real,
+    ground_speed real,
+    wind_speed real,
+    wind_direction real,
     on_ground integer,
     primary key(aircraft_id, timestamp),
     foreign key(aircraft_id) references aircraft(id)
