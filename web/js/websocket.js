@@ -40,15 +40,16 @@ socket.onmessage = function (event) {
     const dataMode = parsedData.dataMode;
     const toReload = parsedData.toReload;
 
-    if (dataMode) {
+    if (dataMode) { //live
         allData.forEach(item => {
             const timestamp = item.timestamp / 1000;
             Object.keys(graphs).forEach(key => {
                 graphs[key].x.push(timestamp);
                 graphs[key].y.push(item[key]);
             })
+            flightPathCoordinates.push([item.latitude, item.longitude]);
         });
-    } else {
+    } else { //replay
         try {
             const currentTime = currentTimestamp / 1000;
             if (currentTime > 0.1) {
@@ -91,12 +92,17 @@ socket.onmessage = function (event) {
             });
         });
 
-        Object.keys(graphs).forEach(key => {
-            graphs[key].x = allData.map(item => item.timestamp / 1000)
-            graphs[key].y = allData.map(item => item[key]);
-        });
+        if (!dataMode){
+            Object.keys(graphs).forEach(key => {
+                graphs[key].x = allData.map(item => item.timestamp / 1000)
+                graphs[key].y = allData.map(item => item[key]);
+            });
+            flightPathCoordinates = allData.map(item => [item.latitude, item.longitude]);
+        }
+        
         totalDuration = allData[allData.length - 1].timestamp / 1000;
         renderGraphs();
+        updatePlanePath();
         shouldReRender = false;
     }
 
