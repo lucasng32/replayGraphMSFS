@@ -8,31 +8,28 @@ This is a fork of [SkyDolly](SkyDolly.md), an external, stand-alone application 
  - Altitude
  - Rate of climb
  - G-force
+ - AoA -> compare to stall conditions
+ - Airspeed -> IAS, TAS, GS
+ - Primary flight controls
 2. Replay pause and play functionality
 3. Replay timeline scrubbing 
 
 ## To Do
 
-1. Add more general flight statistics (UI, simvar problem)
- - AoA -> compare to stall conditions 
- - Airspeed -> IAS, TAS, GS
+1. Flight information
  - Control input smoothness -> variance / rate of change 
- - Environment: wind speed and direction
- - Some intuitive way to show pitch, roll, yaw etc in flight model 
+ - Some intuitive way to show pitch, roll, yaw, flight controls
+ - Terrain map and flight path page (using leaftlet)
 
 2. Full in-sim control of recording and replay
  - Replace server module with plugin (similar to MSFSSimConnectPlugin)
  - Add logbook module functionality in server plugin 
 
-## Future work
-
-1. Stage-specific statistics
+3. Stage-specific statistics
  - Takeoff
- - Landing / climbing (easiest)
- - Turning / other flight maneuvers 
- - Need to change data structure to support flight stages
- - User to input stage of flight 
+ - Landing / climbing (landing missions)
 
-2. Waypoint based missions
+4. Waypoint based missions
+ - Make use of MSFS missions system
  - Judge deviation from flight path
  - Integrated with flight maneuvers 

@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization</title>
+    <!-- Load Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <button class="btn btn-primary settings-button" id="settingsButton">Settings</button>
+    <button class="btn btn-secondary play-pause-button" id="playPauseButton">Pause</button>
+    <div class="toolbar hidden" id="toolbar">
+        <div class="toolbar-content">
+            <button class="btn btn-info btn-block graph-select" id="altitudeButton">Altitude</button>
+            <button class="btn btn-info btn-block graph-select" id="gForceButton">G-Force</button>
+            <button class="btn btn-info btn-block graph-select" id="velocityWorldYButton">Rate of Climb</button>
+            <button class="btn btn-info btn-block graph-select" id="incidenceAlphaButton">Angle of Attack</button>
+            <button class="btn btn-info btn-block graph-select" id="pitchButton">Pitch Angle</button>
+            <button class="btn btn-info btn-block graph-select" id="indicatedAirspeedButton">IAS</button>
+            <button class="btn btn-info btn-block graph-select" id="windSpeedButton">Wind Speed</button>
+            <button class="btn btn-info btn-block graph-select" id="aileronPositionButton">Aileron Position</button>
+        </div>
+    </div>
+    <div class="container">
+        <div id="graphsContainer" class="d-flex flex-wrap">
+            <!-- Graph containers will be dynamically added here -->
+        </div>
+    </div>
+    <div class="slider-container">
+        <input type="range" id="timeSlider" min="0" max="100" step="1" value="0">
+    </div>
+
+    <script src="js/graphs.js"></script>
+    <script src="js/websocket.js"></script>
+</body>
+</html>
