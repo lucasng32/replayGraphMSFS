@@ -33,3 +33,12 @@ This is a fork of [SkyDolly](SkyDolly.md), an external, stand-alone application 
  - Make use of MSFS missions system
  - Judge deviation from flight path
  - Integrated with flight maneuvers 
+
+## UI Layout
+
+1. Tabs
+ - Map -> with heading and flight path
+ - Speed -> true and indicated airspeed, ground speed, vertical speed graphs
+ - Stalls -> AOA, airspeed (true), graph and diagram, pitch
+ - Dynamics -> 2d cross section of airplane with bank angle, vertical and horizontal speed
+ - Control -> control surfaces graphs
