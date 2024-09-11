@@ -6,6 +6,25 @@ socket.onopen = function () {
     console.log('WebSocket connection established');
 };
 
+function handleSliderInput() {
+    const sliderValue = parseFloat(document.getElementById('timeSlider').value);
+    const newTimestamp = sliderValue / 100 * totalDuration;
+    socket.send(JSON.stringify({ command: 'seek', timestamp: newTimestamp }));
+}
+
+function handlePlayPause() {
+    isPlaying = !isPlaying;
+    const playPauseIcon = document.getElementById("playPauseIcon");
+    playPauseIcon.classList.toggle('fa-play');
+    playPauseIcon.classList.toggle('fa-pause');
+    const command = isPlaying ? 'play' : 'pause';
+    socket.send(JSON.stringify({ command }));
+}
+
+document.getElementById('playPauseButton').addEventListener('click', handlePlayPause);
+
+document.getElementById('timeSlider').addEventListener('input', handleSliderInput);
+
 function toggleFollowPlane() {
     followPlane = !followPlane;
     if (followPlane === true) {
@@ -25,6 +44,10 @@ socket.onmessage = function (event) {
     const currentTimestamp = parsedData.timestamp;
     const dataMode = parsedData.dataMode;
     const toReload = parsedData.toReload;
+
+    updatePlanePosition(allData, dataMode, currentTimestamp);
+    updateBankArc(allData, dataMode, currentTimestamp);
+    updatePitchAOA(allData, dataMode, currentTimestamp);
 
     if (dataMode) { //live
         allData.forEach(item => {
@@ -60,10 +83,8 @@ socket.onmessage = function (event) {
                         }]
                     });
                 })
-                updatePlanePosition(allData, dataMode, currentTimestamp);
-                updateArc(allData, dataMode, currentTimestamp);
-                //const slider = document.getElementById('timeSlider');
-                //slider.value = (currentTime / totalDuration) * 100;
+                const slider = document.getElementById('timeSlider');
+                slider.value = (currentTime / totalDuration) * 100;
             }
         } catch (e) {
             console.error('Error updating graphs during replay:', e);
@@ -71,6 +92,7 @@ socket.onmessage = function (event) {
     }
 
     if (shouldReRender || toReload) {
+        //update limits only if reloading
         Object.keys(graphs).forEach(key => {
             const graph = graphs[key];
             const limits = graph.limits;
@@ -82,7 +104,8 @@ socket.onmessage = function (event) {
                 }
             });
         });
-
+        
+        //fully update graphs only if reloading and replay mode
         if (!dataMode){
             Object.keys(graphs).forEach(key => {
                 graphs[key].x = allData.map(item => item.timestamp / 1000)
@@ -92,7 +115,7 @@ socket.onmessage = function (event) {
         }
         
         totalDuration = allData[allData.length - 1].timestamp / 1000;
-        renderGraphs();
+        updateGraphs();
         updatePlanePath();
         shouldReRender = false;
     }

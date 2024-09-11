@@ -38,11 +38,6 @@
 	<!-- Microtip tooltips -->
 	<link rel="stylesheet" href="https://unpkg.com/microtip/microtip.css">
 
-	<!-- Set script root-->
-	<script type=text/javascript>
-        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-	</script>
-
 	<style>
 		html, body {
 			height: 100vh;
@@ -54,20 +49,45 @@
 			display: flex;
 			flex-direction: column;
 		}
-		.sim-input-field {
-			width: 125px;
-		}
-		.vertical-slider {
-			height: 150px;
-			margin-left: 15px;
-			margin-top: 20px;
+
+		.slider-container {
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			background: #f8f9fa;
+			padding: 20px; /* Increase padding for more space around the slider */
+			border-top: 1px solid #ddd;
+			z-index: 1001;
+			display: flex; /* Flexbox to align items horizontally */
+			align-items: center; /* Vertically center the items */
 		}
 
-		.slider .ui-slider-tip {
-			visibility: visible;
-			opacity: 1;
-			top: -30px;
+		.play-pause-button {
+			background: none;
+			border: none;
+			font-size: 24px;
+			cursor: pointer;
+			margin-right: 20px; /* Space between the button and slider */
 		}
+
+		#timeSlider {
+			flex: 1; /* Allow the slider to take up remaining space */
+			height: 10px; /* Increase height for easier interaction */
+			border-radius: 10px;
+			background-color: #e0e0e0;
+			outline: none;
+			cursor: pointer;
+		}
+
+		.graphContainer {
+			height: 40vh;
+		}
+
+		.btn-info {
+			height: 40px;
+			width: 40px;
+		}
+
 	</style>
 </head>
 
@@ -94,7 +114,7 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item m-1">
 					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseAltitude" aria-expanded="true" aria-controls="collapseAltitude" aria-label="Altitude" data-microtip-position="bottom" role="tooltip">
-						<i class="fa-solid fa-plane-departure"></i>
+						<i class="fa-solid fa-up-down"></i>
 					</button>
 				</li>
 				<li class="nav-item m-1">
@@ -103,13 +123,18 @@
 					</button>
 				</li>
 				<li class="nav-item m-1">
-					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseControlSurfaces" aria-expanded="true" aria-controls="collapseControlSurfaces" aria-label="Control surfaces" data-microtip-position="bottom" role="tooltip">
-						<i class="fas fa-sliders-h"></i>
+					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapsePitch" aria-expanded="true" aria-controls="collapsePitch" aria-label="Pitch and AoA" data-microtip-position="bottom" role="tooltip">
+						<img src="angle.svg" width="15" height="15">
 					</button>
 				</li>
 				<li class="nav-item m-1">
-					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseFlightDynamics" aria-expanded="true" aria-controls="collapseFlightDynamics" aria-label="Flight dynamics" data-microtip-position="bottom" role="tooltip">
-						<i class="fa-solid fa-plane"></i>
+					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseRoll" aria-expanded="true" aria-controls="collapseRoll" aria-label="Bank and turns" data-microtip-position="bottom" role="tooltip">
+						<i class="fa-solid fa-arrows-turn-right"></i>
+					</button>
+				</li>
+				<li class="nav-item m-1">
+					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseGForce" aria-expanded="true" aria-controls="collapseGForce" aria-label="G-Force" data-microtip-position="bottom" role="tooltip">
+						<i class="fa-solid fa-angles-up" width="15" height="15"></i>
 					</button>
 				</li>
 			</ul>
@@ -131,8 +156,8 @@
 
 					<div id="collapseAltitude" class="collapse show" aria-labelledby="collapseAltitude" data-parent="#accordionHUD">
 						<div class="card-body">
-							<div id="altitudeContainer"></div>
-							<div id="velocityWorldYContainer"></div>
+							<div id="altitudeContainer" class="graphContainer"></div>
+							<div id="velocityWorldYContainer" class="graphContainer"></div>
 						</div>
 					</div>
 				</div>
@@ -140,26 +165,37 @@
 				<!-- Speed -->
 				<div class="card">
 					<div id="collapseSpeed" class="collapse" aria-labelledby="collapseSpeed" data-parent="#accordionHUD">
-						<div class="card-body text-center">
-							
+						<div class="card-body">
+							<div id="trueAirspeedContainer" class="graphContainer"></div>
+							<div id="groundSpeedContainer" class="graphContainer"></div>
 						</div>
 					</div>
 				</div>
 
-				<!-- CONTROL SURFACES -->
+				<!-- Pitch and AOA -->
 				<div class="card">
-					<div id="collapseControlSurfaces" class="collapse" aria-labelledby="collapseControlSurfaces" data-parent="#accordionHUD">
+					<div id="collapsePitch" class="collapse" aria-labelledby="collapsePitch" data-parent="#accordionHUD">
 						<div class="card-body text-center">
-
+							<canvas id="pitchCanvas" class="canvas" width="300" height="300"></canvas>
+							<div id="incidenceAlphaContainer" class="graphContainer"></div>
 						</div>
 					</div>
 				</div>
 
-				<!-- FLIGHT DYNAMICS -->
+				<!-- Bank and Turns -->
 				<div class="card">
-					<div id="collapseFlightDynamics" class="collapse" aria-labelledby="collapseFlightDynamics" data-parent="#accordionHUD">
+					<div id="collapseRoll" class="collapse" aria-labelledby="collapseRoll" data-parent="#accordionHUD">
 						<div class="card-body text-center">
-							<canvas id="bankCanvas" width="300" height="300"></canvas>
+							<canvas id="bankCanvas" class="canvas" width="300" height="300"></canvas>
+						</div>
+					</div>
+				</div>
+
+				<!-- G-Force -->
+				<div class="card">
+					<div id="collapseGForce" class="collapse" aria-labelledby="collapseGForce" data-parent="#accordionHUD">
+						<div class="card-body text-center">
+							<div id="gForceContainer" class="graphContainer"></div>
 						</div>
 					</div>
 				</div>
@@ -167,6 +203,14 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="slider-container">
+		<button class="play-pause-button" id="playPauseButton">
+			<i class="fa-solid fa-pause" id="playPauseIcon"></i>
+		</button>
+        <input type="range" id="timeSlider" min="0" max="100" step="1" value="0">
+	</div>
+    </div>
 
 </div>  <!--Main container-->
 
@@ -243,46 +287,6 @@
 
     // Adding marker to the map
     planeMarker.addTo(map);
-
-</script>
-
-<script>
-    $("#elevator-trim-slider")
-        .slider({
-            min: -30,
-            max: 30,
-            orientation: "vertical"
-        })
-        .slider("pips", {
-            step: "10",
-            first: "pip",
-            last: "pip"
-        });
-
-    $("#flaps-slider")
-        .slider({
-            min: -100,
-            max: 0,
-            orientation: "vertical",
-	        value: 10
-        })
-        .slider("pips", {
-            step: "50",
-            first: "pip",
-            last: "pip"
-        });
-
-    $("#rudder-trim-slider")
-        .slider({
-            min: -50,
-            max: 50,
-            orientation: "horizontal"
-        })
-        .slider("pips", {
-            step: "25",
-            first: "pip",
-            last: "pip"
-        });
 
 </script>
 

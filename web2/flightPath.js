@@ -12,8 +12,7 @@ function updatePlanePath() {
     }
     // Create a new polyline with the updated coordinates
     flightPathPolyline = L.polyline(flightPathCoordinates, { color: 'blue' }).addTo(map);
-    // Optionally, adjust the map view to fit the new path
-    map.fitBounds(flightPathPolyline.getBounds());
+
 }
 
 function updatePlanePosition(data, dataMode, curr_timestamp) {
@@ -32,7 +31,7 @@ function updatePlanePosition(data, dataMode, curr_timestamp) {
         }
     }
     var pos = L.latLng(dataSlice.latitude, dataSlice.longitude);
-    console.log(pos);
+
     planeMarker.setLatLng(pos);
     planeMarker.setRotationAngle(dataSlice.heading);
 
