@@ -1,15 +1,15 @@
 const graphs = {
-    altitude: { x: [], y: [], id: 'altitudeGraph', limits: []},
-    gForce: { x: [], y: [], id: 'gForceGraph', limits: {}},
-    velocityWorldY: { x: [], y: [], id: 'rateOfClimbGraph', limits: []},
-    incidenceAlpha: { x: [], y: [], id: 'angleOfAttackGraph', limits: {'stallAlpha': 0}},
-    pitch: { x: [], y: [], id: 'pitchGraph', limits: {'staticPitch': 0}},
-    indicatedAirspeed: { x: [], y: [], id: 'indicatedAirspeedGraph', limits: {'flapsUpStallSpeed': 0}},
-    trueAirspeed: { x: [], y: [], id: 'trueAirspeedGraph', limits: {}},
-    groundSpeed: { x: [], y: [], id: 'groundSpeedGraph', limits: {}},
-    windSpeed: { x: [], y: [], id: 'windSpeedGraph', limits: {}},
-    aileronPosition: { x: [], y: [], id: 'aileronPositionGraph', limits: {}},
-    bank: { x: [], y: [], id: 'bankGraph', limits: {}}
+    altitude: { x: [], y: [], id: 'altitudeGraph', limits: [], title: 'Altitude'},
+    gForce: { x: [], y: [], id: 'gForceGraph', limits: {}, title: 'G-Force'},
+    velocityWorldY: { x: [], y: [], id: 'rateOfClimbGraph', limits: [], title: 'Rate of Climb'},
+    incidenceAlpha: { x: [], y: [], id: 'angleOfAttackGraph', limits: {'stallAlpha': 0}, title: 'Angle of Attack'},
+    pitch: { x: [], y: [], id: 'pitchGraph', limits: {'staticPitch': 0}, title: 'Pitch'},
+    indicatedAirspeed: { x: [], y: [], id: 'indicatedAirspeedGraph', limits: {'flapsUpStallSpeed': 0}, title: 'Indicated Airspeed'},
+    trueAirspeed: { x: [], y: [], id: 'trueAirspeedGraph', limits: {'flapsUpStallSpeed': 0}, title: 'True Airspeed'},
+    groundSpeed: { x: [], y: [], id: 'groundSpeedGraph', limits: {}, title: 'Ground Speed'},
+    windSpeed: { x: [], y: [], id: 'windSpeedGraph', limits: {}, title: 'Wind Speed'},
+    aileronPosition: { x: [], y: [], id: 'aileronPositionGraph', limits: {}, title: 'Aileron Position'},
+    bank: { x: [], y: [], id: 'bankGraph', limits: {}, title: 'Bank'},
 };
 
 arr_cards = {
@@ -37,7 +37,7 @@ function renderGraphs(card) {
         container.appendChild(graphDiv);
 
         const layout = {
-            title: type.charAt(0).toUpperCase() + type.slice(1) + ' Data',
+            title: {text: graphs[type].title, font: {size: 30}},
             xaxis: { title: 'Time (s)' },
             yaxis: { title: type.charAt(0).toUpperCase() + type.slice(1) },
             annotations: [],

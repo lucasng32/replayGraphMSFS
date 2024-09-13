@@ -34,6 +34,7 @@ function animate() {
 // Function to draw the arc based on the end angle in radians
 function drawBankArc(canvas, endAngle, counterclockwise=false) {
     const ctx = canvas.getContext('2d');
+    ctx.font = '20px Arial';
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = 150;
@@ -61,6 +62,7 @@ function drawBankArc(canvas, endAngle, counterclockwise=false) {
 
 function drawVelocityVectors(canvas, dataSlice){
     const ctx = canvas.getContext('2d');
+    ctx.font = '20px Arial';
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const velocityWorldY = dataSlice.velocityWorldY;
@@ -130,10 +132,11 @@ function updateDrawData(data, dataMode, currSimTimestamp){
 function drawPitchAOA(canvas, aoa, pitch){
 
     const ctx = canvas.getContext('2d');
+    ctx.font = '20px Arial';
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = 150;
-    const radiusText = 30;
+    const radiusText = 60;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -183,8 +186,8 @@ function updatePitchAOA(dataSlice) {
 
 // Make sure the image is fully loaded before drawing
 imgPlane.onload = function() {
-    drawBankArc(bankCanvas, 0);
-    drawPitchAOA(pitchCanvas, 0, 0);
+    drawBankArc(bankCanvas, 1);
+    drawPitchAOA(pitchCanvas, 0.5, 1);
 };
 
 requestAnimationFrame(animate);

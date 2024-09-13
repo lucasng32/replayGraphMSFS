@@ -75,7 +75,7 @@ socket.onmessage = function (event) {
                             xref: 'x',
                             yref: 'paper',
                             line: {
-                                color: 'red',
+                                color: 'blue',
                                 width: 2,
                                 dash: 'dashdot'
                             }
