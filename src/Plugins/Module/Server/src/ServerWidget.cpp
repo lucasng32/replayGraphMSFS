@@ -142,6 +142,9 @@ void ServerWidget::onWebMessage(QString message) noexcept
             const std::int64_t &sliderVal = webResponse.value("timestamp").toDouble() * 1000;
             skyConnectManager.seek(sliderVal, SkyConnectIntf::SeekMode::Continuous);
         }
+        if (command == "record"){
+            SkyConnectManager::getInstance().startRecording(SkyConnectIntf::RecordingMode::SingleAircraft);
+        }
     }
 }
 

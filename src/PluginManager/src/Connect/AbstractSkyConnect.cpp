@@ -81,7 +81,9 @@ struct AbstractSkyConnectPrivate
     {
         reconnectTimer.setSingleShot(true);
         updateSimulationTimeUpdateInterval();
-        retryConnectPeriods = SkyMath::calculateFibonacci<::NofRetryConnectPeriods>(::NofRetryConnectPeriods);
+        // retryConnectPeriods = SkyMath::calculateFibonacci<::NofRetryConnectPeriods>(::NofRetryConnectPeriods);
+        // start application first, then wait for user to set up VR before starting, so no need increased retry time
+        std::fill(retryConnectPeriods.begin(), retryConnectPeriods.end(), 2);
 #ifdef DEBUG
         qDebug() << "AbstractSkyConnectPrivate: AbstractSkyConnectPrivate: elapsed timer clock type:" << elapsedTimer.clockType();
 #endif

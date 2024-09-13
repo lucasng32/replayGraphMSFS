@@ -28,6 +28,8 @@
 #include <QObject>
 #include <QString>
 
+// TO DO: migrate this to be a standalone plugin instead of a module
+
 class QWidget;
 
 #include <PluginManager/Module/AbstractModule.h>

@@ -51,6 +51,7 @@ void WebSocketServer::onNewConnection()
     connect(pSocket, &QWebSocket::disconnected, this, &WebSocketServer::socketDisconnected);
 
     m_clients << pSocket;
+    emit newClientConnect();
 }
 //! [onNewConnection]
 

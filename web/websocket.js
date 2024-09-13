@@ -46,8 +46,7 @@ socket.onmessage = function (event) {
     const toReload = parsedData.toReload;
 
     updatePlanePosition(allData, dataMode, currentTimestamp);
-    updateBankArc(allData, dataMode, currentTimestamp);
-    updatePitchAOA(allData, dataMode, currentTimestamp);
+    updateDrawData(allData, dataMode, currentTimestamp);
 
     if (dataMode) { //live
         allData.forEach(item => {
@@ -63,7 +62,7 @@ socket.onmessage = function (event) {
             const currentTime = currentTimestamp / 1000;
             if (currentTime > 0.1) {
                 Object.keys(graphs).forEach(type => {
-                    if (!document.getElementById(type + 'Container')){
+                    if (!document.getElementById(graphs[type].id)) {
                         return;
                     }
                     Plotly.relayout(graphs[type].id, {
