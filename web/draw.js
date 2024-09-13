@@ -54,7 +54,7 @@ function drawBankArc(canvas, endAngle, counterclockwise=false) {
     // Draw the plane image rotated
     drawImage(ctx, imgPlane, centerX, centerY, 0.7, endAngle, 34);
 
-    addTextArc(ctx, `${Math.round(endAngle / Math.PI * 180)}°`, startAngle, endAngle, radius, radiusText, centerX, centerY);
+    addTextArc(ctx, `${Math.round(endAngle / Math.PI * 180)}°`, startAngle, endAngle, radius, radiusText, centerX, centerY, 'blue');
 
     drawLineArc(ctx, 0, radius+20, centerX, centerY);
     
@@ -63,6 +63,7 @@ function drawBankArc(canvas, endAngle, counterclockwise=false) {
 function drawVelocityVectors(canvas, dataSlice){
     const ctx = canvas.getContext('2d');
     ctx.font = '20px Arial';
+    ctx.fillStyle = 'black';
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const velocityWorldY = dataSlice.velocityWorldY;
@@ -74,23 +75,23 @@ function drawVelocityVectors(canvas, dataSlice){
     const VxLocal = velocityWorldX * Math.cos(headingRadians) - velocityWorldZ * Math.sin(headingRadians);
     if (Math.abs(VxLocal) > 0.1){
         if (VxLocal > 0){
-            drawImage(ctx, imgArrow, centerX+130, centerY, 0.05, 0);
-            ctx.fillText(`${Math.round(Math.abs(VxLocal))} ft/s`, centerX+130, centerY+20);
+            drawImage(ctx, imgArrow, centerX+210, centerY, 0.05, 0);
+            ctx.fillText(`${Math.round(Math.abs(VxLocal))} ft/s`, centerX+210, centerY+30);
         }
         else{
-            drawImage(ctx, imgArrow, centerX-130, centerY, 0.05, Math.PI);
-            ctx.fillText(`${Math.round(Math.abs(VxLocal))} ft/s`, centerX-130, centerY+20);
+            drawImage(ctx, imgArrow, centerX-210, centerY, 0.05, Math.PI);
+            ctx.fillText(`${Math.round(Math.abs(VxLocal))} ft/s`, centerX-210, centerY+30);
         }
     }
 
     if (Math.abs(velocityWorldY) > 0.1){
         if (velocityWorldY < 0){
-            drawImage(ctx, imgArrow, centerX, centerY+130, 0.05, Math.PI/2);
-            ctx.fillText(`${Math.round(Math.abs(velocityWorldY))} ft/s`, centerX+10, centerY+130);
+            drawImage(ctx, imgArrow, centerX, centerY+210, 0.05, Math.PI/2);
+            ctx.fillText(`${Math.round(Math.abs(velocityWorldY))} ft/s`, centerX+10, centerY+210);
         }
         else{
-            drawImage(ctx, imgArrow, centerX, centerY-130, 0.05, Math.PI*3/2);
-            ctx.fillText(`${Math.round(Math.abs(velocityWorldY))} ft/s`, centerX+10, centerY-130);
+            drawImage(ctx, imgArrow, centerX, centerY-210, 0.05, Math.PI*3/2);
+            ctx.fillText(`${Math.round(Math.abs(velocityWorldY))} ft/s`, centerX+10, centerY-210);
         }
     }
 
@@ -186,8 +187,16 @@ function updatePitchAOA(dataSlice) {
 
 // Make sure the image is fully loaded before drawing
 imgPlane.onload = function() {
-    drawBankArc(bankCanvas, 1);
+    //test
+    data = {
+        velocityWorldX: 4,
+        velocityWorldY: 1,
+        velocityWorldZ: -3,
+        heading: 90,
+    }
+    drawBankArc(bankCanvas, 0);
     drawPitchAOA(pitchCanvas, 0.5, 1);
+    drawVelocityVectors(bankCanvas, data)
 };
 
 requestAnimationFrame(animate);
