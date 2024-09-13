@@ -84,8 +84,12 @@
 		}
 
 		.btn-info {
-			height: 40px;
-			width: 40px;
+			height: 60px;
+			width: 60px;
+		}
+
+		#followModeButton {
+			height: 50px;
 		}
 
 	</style>
@@ -105,7 +109,7 @@
 			</ul>
 		</div>
 		<div class="mx-auto order-0">
-			<a class="navbar-brand mx-auto" href="#">Test</a>
+			<a class="navbar-brand mx-auto" href="#"></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -124,7 +128,7 @@
 				</li>
 				<li class="nav-item m-1">
 					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapsePitch" aria-expanded="true" aria-controls="collapsePitch" aria-label="Pitch and AoA" data-microtip-position="bottom" role="tooltip">
-						<img src="angle.svg" width="15" height="15">
+						<img src="angle.svg" width="20" height="20">
 					</button>
 				</li>
 				<li class="nav-item m-1">
@@ -134,7 +138,7 @@
 				</li>
 				<li class="nav-item m-1">
 					<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseGForce" aria-expanded="true" aria-controls="collapseGForce" aria-label="G-Force" data-microtip-position="bottom" role="tooltip">
-						<i class="fa-solid fa-angles-up" width="15" height="15"></i>
+						<i class="fa-solid fa-angles-up" width="20" height="20"></i>
 					</button>
 				</li>
 			</ul>
@@ -176,7 +180,7 @@
 				<div class="card">
 					<div id="collapsePitch" class="collapse" aria-labelledby="collapsePitch" data-parent="#accordionHUD">
 						<div class="card-body text-center">
-							<canvas id="pitchCanvas" class="canvas" width="400" height="400"></canvas>
+							<canvas id="pitchCanvas" class="canvas" width="400" height="350"></canvas>
 							<div id="incidenceAlphaContainer" class="graphContainer"></div>
 						</div>
 					</div>
