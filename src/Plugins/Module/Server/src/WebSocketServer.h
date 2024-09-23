@@ -15,7 +15,7 @@ public:
     explicit WebSocketServer(quint16 port, bool debug = false, QObject *parent = nullptr);
     ~WebSocketServer();
 
-    void sendData(const QJsonObject &data);
+    void sendData(const int event, const QJsonObject &data);
 
 Q_SIGNALS:
     void closed();

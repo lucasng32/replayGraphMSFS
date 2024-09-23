@@ -31,9 +31,13 @@ WebSocketServer::~WebSocketServer()
 }
 
 
-void WebSocketServer::sendData(const QJsonObject &data)
+void WebSocketServer::sendData(const int event, const QJsonObject &data)
 {
-    QJsonDocument doc(data);
+    QJsonObject dataWithEvent = {
+        {"event", event},
+        {"data", data}
+    };
+    QJsonDocument doc(dataWithEvent);
     QString message = doc.toJson(QJsonDocument::Compact);
 
     for (QWebSocket *client : m_clients) {

@@ -60,13 +60,21 @@ private:
     const std::unique_ptr<ServerWidgetPrivate> d;
 
     void initUi() noexcept;
+    void sendLogbookData() noexcept;
+    void loadFlight(const std::int64_t selectedFlightId) noexcept;
+    void sendReplayData() noexcept;
+    void sendPrevRecordingData() noexcept;
+    void onReplayTimestampChanged(std::int64_t timestamp) noexcept;
+    void onRecordingTimestampChanged(std::int64_t timestamp) noexcept;
     void frenchConnection() noexcept;
 
 private slots:
     void updateUi() noexcept;
+    void onRecordingStopped() noexcept;
     void onTimestampChanged(std::int64_t timestamp, TimeVariableData::Access access) noexcept;
     void onStateChanged(Connect::State state) noexcept;
     void onWebMessage(QString message) noexcept;
+    void onNewClientConnect() noexcept;
 };
 
 #endif // LOCATIONWIDGET_H
